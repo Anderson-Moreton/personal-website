@@ -11,7 +11,6 @@
   min-height: 100vh; 
   position: sticky;
   top: 0;
-  margin-left: 0px;
   transition: margin-left 0.3s; 
 }
 
@@ -77,6 +76,7 @@ h1::after {
 .bi-discord {
   font-size: 30px;
 } 
+/* End Sidebar */
 
 /* NAVBAR Expand */
 .navbar.navbar-expand-lg.navbar-light.bg-light {
@@ -107,6 +107,4 @@ a.navbar-brand.fs-4 {
     margin-left: 0;
   }
 }
-
 /* End NAVBAR Expand */ 
-/* End Sidebar */

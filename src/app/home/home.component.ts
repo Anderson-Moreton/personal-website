@@ -1,22 +1,31 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, Renderer2 } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SidebarComponent } from '../shared/sidebar/sidebar.component';
+import { NavbarComponent } from '../shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SidebarComponent, NavbarComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent {
 
-  // DEPOSITIONS SECTION
+  sidebarActive = false; // controla a sidebar
+
+  toggleSidebar() {
+    this.sidebarActive = !this.sidebarActive;
+  }
+
+  // DEPOSITIONS (TESTIMONIALS)
+
   depositions = [
     {
       name: 'Otávio Moreton',
       hobby: 'Game',
       image: 'assets/img/otavio-logo.jpg',
-      text: "I love my dad. Congratulations for being such a dedicated student and always finding time to play with me.",
+      text: 'I love my dad. Congratulations for being such a dedicated student and always finding time to play with me.',
       likes: 0,
       liked: false
     },
@@ -24,7 +33,7 @@ export class HomeComponent implements AfterViewInit {
       name: 'Priscila Moreton',
       hobby: 'Trip',
       image: 'assets/img/priscila-logo.jpeg',
-      text: "Congratulations on your commitment and dedication, you are an example of determination. Keep it up! I love you!",
+      text: 'Congratulations on your commitment and dedication, you are an example of determination. Keep it up! I love you!',
       likes: 0,
       liked: false
     },
@@ -46,47 +55,12 @@ export class HomeComponent implements AfterViewInit {
     }
   ];
 
-  // Toggle like for a specific deposition
-  toggleLike(depo: any) {
+  // LIKE HANDLER
+
+  // Toggle like for a specific testimonial
+  toggleLike(depo: any): void {
     depo.liked = !depo.liked;
     depo.likes += depo.liked ? 1 : -1;
-  }
-
-  // SIDEBAR TOGGLE
-  sidebarActive = false;
-  toggleSidebar() {
-    this.sidebarActive = !this.sidebarActive;
-  }
-
-  // TYPEWRITER EFFECT FOR NAME
-  fullName = "Anderson Moreton\nRodrigues"; // full name with line break
-  currentIndex = 0; // current character index
-  typingSpeed = 150; // typing speed in ms
-
-  // Reference to the h1 element in the template
-  @ViewChild('typewriterH1', { static: true }) h1!: ElementRef;
-
-  constructor(private renderer: Renderer2) {}
-
-  ngAfterViewInit(): void {
-    this.typeWriter();
-  }
-
-  // Typewriter function using Renderer2
-  typeWriter(): void {
-    if (this.currentIndex < this.fullName.length) {
-      const currentChar = this.fullName.charAt(this.currentIndex);
-      const content = currentChar === '\n' ? document.createElement('br') : this.renderer.createText(currentChar);
-
-      if (currentChar === '\n') {
-        this.renderer.appendChild(this.h1.nativeElement, content);
-      } else {
-        this.renderer.appendChild(this.h1.nativeElement, content);
-      }
-
-      this.currentIndex++;
-      setTimeout(() => this.typeWriter(), this.typingSpeed);
-    }
   }
 
 }

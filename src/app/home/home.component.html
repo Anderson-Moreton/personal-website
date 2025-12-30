@@ -1,62 +1,45 @@
 <div class="main-container d-flex align-items-start">
-  <!-- Sidebar -->
-  <div class="sidebar" id="side_nav" [class.active]="sidebarActive">
-    <div class="header-box px-2 pt-3 pb-4">
-      <button class="btn d-md-none close-btn px-1 py-0 text-white" (click)="toggleSidebar()">
-        <i class="bi bi-x-square"></i>
-      </button>
-      <img class="logo-profile" src="assets/img/logoProfileAnderson.png" alt="Foto de Perfil" />
-      <h1 #typewriterH1 class="fs-4 text-center text-white"></h1>
-    </div>
-    <ul class="list-unstyled px-2">
-      <li><a href="#" class="text-decoration-none text-center px-3 py-2 d-block"><i class="bi bi-house-door"></i> Home</a></li>
-      <li><a href="#" class="text-decoration-none text-center px-3 py-2 d-block"><i class="bi bi-file-earmark-person"></i> About me</a></li>
-      <li><a href="#" class="text-decoration-none text-center px-3 py-2 d-block"><i class="bi bi-envelope"></i> Send a message</a></li>
-      <li><a href="#" class="text-decoration-none text-center px-3 py-2 d-block"><i class="bi bi-person-workspace"></i> My repository</a></li>
-      <li><a target="_blank" href="https://github.com/Anderson-Moreton" class="text-decoration-none text-center px-3 py-2 d-block"><i class="bi bi-github"></i></a></li>
-      <li><a href="#" class="text-decoration-none text-center px-3 py-2 d-block"><i class="bi bi-person-workspace"></i> Social Media</a></li>
-      <div class="icons">
-        <li><a target="_blank" href="https://www.instagram.com/moretons_family/" class="text-decoration-none text-center px-3 py-2 d-block"><i class="bi bi-instagram"></i></a></li>
-        <li><a target="_blank" href="https://www.linkedin.com/in/anderson-moreton-rodrigues-9984089a/" class="text-decoration-none text-center px-3 py-2 d-block"><i class="bi bi-linkedin"></i></a></li>
-        <li><a target="_blank" href="https://discord.com/channels/@moreton_anderson" class="text-decoration-none text-center px-3 py-2 d-block"><i class="bi bi-discord"></i></a></li>
-      </div>
-    </ul>
-  </div>
+  <!-- Sidebar Component -->
+  <app-sidebar [sidebarActive]="sidebarActive"></app-sidebar>
 
-  <!-- Content -->
   <div class="content">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <div class="d-flex justify-content-between d-md-none d-block">
-          <a class="navbar-brand fs-4" href="#">Anderson Moreton</a>
-          <button class="btn px-1 py-0 open-btn" (click)="toggleSidebar()">
-            <i class="bi bi-list"></i>
-          </button>
-        </div>
-      </div>
-    </nav>
+    <!-- Navbar Component -->
+    <app-navbar (toggleSidebarEvent)="sidebarActive = !sidebarActive"></app-navbar>
 
     <main>
       <div class="container">
-        <!-- Welcome Section -->
+        <!-- Session Welcome -->
         <section id="session-welcome">
           <div class="row">
             <div class="session-welcome-content col-12 col-lg-6">
               <h3>Thank you for visiting my work...<br />Welcome!</h3>
               <h5 class="ms-3">I want to make one comment about this project:</h5>
               <div class="about-text ms-3">
-                <p>This project was made to practice and show some web development skills. I also wanted to try new things and learn more by doing them. It helped me understand how front-end and back-end work together.</p>
-                <p>The goal is to use what I have learned and improve my knowledge. For example, the testimonials with likes on the main page, and the message form. I added them to practice front-end and back-end integration.</p>
-                <p>Any help or feedback is very welcome, and I accept criticism. Your advice can help me see my mistakes, find what I need to improve, and continue to grow as a developer.</p>
+                <p>
+                  This project was made to practice and show some web development skills. I also
+                  wanted to try new things and learn more by doing them. It helped me understand how
+                  front-end and back-end work together.
+                </p>
+                <p>
+                  The goal is to use what I have learned and improve my knowledge. For example, the
+                  testimonials with likes on the main page, and the message form. I added them to
+                  practice front-end and back-end integration.
+                </p>
+                <p>
+                  Any help or feedback is very welcome, and I accept criticism. Your advice can help
+                  me see my mistakes, find what I need to improve, and continue to grow as a
+                  developer.
+                </p>
               </div>
             </div>
+
             <div class="banner col-12 col-lg-6">
               <img src="assets/img/indexPhotoAndersonMoreton.png" class="img-thumbnail" alt="" />
             </div>
           </div>
         </section>
 
-        <!-- Testimonials Section -->
+        <!-- Depositions Section -->
         <section id="depositions" class="container mt-2">
           <div class="title-depositions col-12 d-flex justify-content-center align-items-center">
             <h4 class="section-title mt-1">Testimonials</h4>
@@ -65,7 +48,10 @@
           <div class="card-deposition mt-3">
             <div class="container">
               <div class="row g-3 align-items-stretch">
-                <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 d-flex" *ngFor="let depo of depositions">
+                <div
+                  class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 d-flex"
+                  *ngFor="let depo of depositions"
+                >
                   <div class="deposition card flex-fill h-100">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                       <div class="item-deposition text-center">
@@ -78,7 +64,11 @@
                     </div>
                     <p class="depoiment">{{ depo.text }}</p>
                     <div class="like-container mt-auto">
-                      <i class="like-icon" [ngClass]="depo.liked ? 'bi-heart-fill liked' : 'bi-heart'" (click)="toggleLike(depo)"></i>
+                      <i
+                        class="like-icon"
+                        [ngClass]="depo.liked ? 'bi-heart-fill liked' : 'bi-heart'"
+                        (click)="toggleLike(depo)"
+                      ></i>
                       <span class="like-count">{{ depo.likes }}</span>
                     </div>
                   </div>
