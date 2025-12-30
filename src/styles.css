@@ -1,1 +1,112 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  font-family: Candara;
+  font-weight: 400;
+} 
+
+/* Sidebar */
+#side_nav {
+  background: #060d15;
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 100vh; 
+  position: sticky;
+  top: 0;
+  margin-left: 0px;
+  transition: margin-left 0.3s; 
+}
+
+#side_nav.active {
+  margin-left: 0;
+}
+
+.content {
+  background: #eee;
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.logo-profile {
+  height: 140px;
+  width: 140px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  margin: 20px 45px;
+}
+
+h1::after {
+  content: "|";
+  color: #fff;
+  opacity: 1;
+  animation: flashing 1s infinite;
+}
+
+@keyframes flashing {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.sidebar li a,
+.sidebar li a:hover {
+  color: #3effbe;
+  transition: 1s;
+}
+
+.sidebar li a {
+  color: #fff;
+}
+
+.icons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.bi-x-square {
+  margin-left: 200px;
+}
+
+.bi-github,
+.bi-instagram,
+.bi-linkedin,
+.bi-discord {
+  font-size: 30px;
+} 
+
+/* NAVBAR Expand */
+.navbar.navbar-expand-lg.navbar-light.bg-light {
+  padding: 0;
+}
+
+.container-fluid {
+  background-color: #060d15;
+}
+
+a.navbar-brand.fs-4 {
+  color: #fff;
+}
+
+.bi-list::before {
+  color: #fff;
+} 
+
+@media (max-width: 767px) {
+  #side_nav {
+    margin-left: -250px;
+    position: fixed;
+    min-height: 100vh;
+    z-index: 1;
+    transition: margin-left 0.3s; 
+  }
+  #side_nav.active {
+    margin-left: 0;
+  }
+}
+
+/* End NAVBAR Expand */ 
+/* End Sidebar */
