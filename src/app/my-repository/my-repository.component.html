@@ -1,4 +1,49 @@
-<div class="container mt-4">
-  <h1>My Repository</h1>
-  <p>This page will show my GitHub projects.</p>
+<div class="main-container d-flex align-items-start">
+  <!-- Sidebar -->
+  <app-sidebar [sidebarActive]="sidebarActive"></app-sidebar>
+
+  <div class="content">
+    <!-- Navbar -->
+    <app-navbar (toggleSidebarEvent)="sidebarActive = !sidebarActive"></app-navbar>
+
+    <main>
+      <section class="form-repository">
+        <h4>My Repository</h4>
+      </section>
+
+      <section class="pb-5">
+        <div class="container">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 ms-1 me-1">
+
+            <div class="col" *ngFor="let project of projects">
+              <div class="card card-item h-100">
+                <img
+                  [src]="project.image"
+                  [alt]="project.title"
+                />
+
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">{{ project.title }}</h5>
+                  <p class="card-text">
+                    {{ project.description }}
+                  </p>
+                </div>
+
+                <div class="card-button mt-auto">
+                  <a
+                    routerLink="/coming-soon"
+                    target="_blank"
+                    class="btn btn-primary w-100"
+                  >
+                    View more
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
 </div>
