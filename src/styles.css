@@ -1,32 +1,43 @@
+/* RESET / GLOBAL */
 * {
   font-family: Candara;
   font-weight: 400;
-} 
+}
 
-/* Sidebar */
+/* SIDEBAR */
 #side_nav {
   background: #060d15;
   min-width: 250px;
   max-width: 250px;
-  min-height: 100vh; 
-  position: sticky;
+  height: 100vh;
+
+  position: fixed;
   top: 0;
-  transition: margin-left 0.3s; 
+  left: 0;
+
+  overflow-y: auto;
+  z-index: 1050;
+
+  transition: margin-left 0.3s ease;
 }
 
-#side_nav.active {
+/* Desktop + Tablet */
+#side_nav {
   margin-left: 0;
 }
 
-.content {
-  background: #eee;
-  width: 100%;
-  height: auto;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
+/* Mobile ONLY */
+@media (max-width: 767px) {
+  #side_nav {
+    margin-left: -250px;
+  }
+
+  #side_nav.active {
+    margin-left: 0;
+  }
 }
 
+/* Sidebar content */
 .logo-profile {
   height: 140px;
   width: 140px;
@@ -35,30 +46,13 @@
   margin: 20px 45px;
 }
 
-h1::after {
-  content: "|";
-  color: #fff;
-  opacity: 1;
-  animation: flashing 1s infinite;
-}
-
-@keyframes flashing {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-.sidebar li a,
-.sidebar li a:hover {
-  color: #3effbe;
-  transition: 1s;
-}
-
 .sidebar li a {
   color: #fff;
+  transition: 0.3s;
+}
+
+.sidebar li a:hover {
+  color: #3effbe;
 }
 
 .icons {
@@ -66,6 +60,7 @@ h1::after {
   justify-content: space-around;
 }
 
+/* Close Button */
 .bi-x-square {
   margin-left: 200px;
 }
@@ -75,10 +70,43 @@ h1::after {
 .bi-linkedin,
 .bi-discord {
   font-size: 30px;
-} 
-/* End Sidebar */
+}
 
-/* NAVBAR Expand */
+/* Cursor typing */
+h1::after {
+  content: "|";
+  color: #fff;
+  animation: flashing 1s infinite;
+}
+
+@keyframes flashing {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* CONTENT */
+.content {
+  background: #eee;
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  min-height: 100vh;
+}
+
+/* Mobile content */
+@media (max-width: 767px) {
+  .content {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  #side_nav {
+    overflow-y: hidden;
+  }
+}
+
+/* NAVBAR */
 .navbar.navbar-expand-lg.navbar-light.bg-light {
   padding: 0;
 }
@@ -93,18 +121,4 @@ a.navbar-brand.fs-4 {
 
 .bi-list::before {
   color: #fff;
-} 
-
-@media (max-width: 767px) {
-  #side_nav {
-    margin-left: -250px;
-    position: fixed;
-    min-height: 100vh;
-    z-index: 1;
-    transition: margin-left 0.3s; 
-  }
-  #side_nav.active {
-    margin-left: 0;
-  }
 }
-/* End NAVBAR Expand */ 
