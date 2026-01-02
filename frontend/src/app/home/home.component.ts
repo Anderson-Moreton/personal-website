@@ -12,7 +12,7 @@ import { NavbarComponent } from '../shared/navbar/navbar.component';
 })
 export class HomeComponent {
 
-  sidebarActive = false; // controla a sidebar
+  sidebarActive = false; // controls the sidebar
 
   toggleSidebar() {
     this.sidebarActive = !this.sidebarActive;

@@ -20,7 +20,10 @@
 }
 
 .picture-message {
+  position: relative;
   width: 100%;
+  max-width: 300px; 
+  margin: auto;
 }
 
 .h-100 {
@@ -93,3 +96,4 @@ input[type="radio"]:checked {
     background-color: #0a1625; /* slightly lighter background */
     transform: scale(1.05);    /* small zoom effect */
 }
+

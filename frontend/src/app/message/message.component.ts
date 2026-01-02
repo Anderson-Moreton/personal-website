@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-message',
@@ -27,9 +28,12 @@ export class MessageComponent {
   // Image upload
   imageFile: File | null = null;
 
-  // References to template elements
+  // Template element references
   @ViewChild('imagePreview') imagePreview!: ElementRef<HTMLImageElement>;
   @ViewChild('cardIcon') cardIcon!: ElementRef<HTMLElement>;
+
+  // Inject HttpClient
+  constructor(private http: HttpClient) {}
 
   // Handle file input change
   onFileChange(event: Event): void {
@@ -40,27 +44,46 @@ export class MessageComponent {
 
     const reader = new FileReader();
     reader.onload = () => {
-      // Set the preview image
+      // Show preview image
       this.imagePreview.nativeElement.src = reader.result as string;
-      // Hide the icon
+      // Hide icon
       this.cardIcon.nativeElement.style.display = 'none';
     };
     reader.readAsDataURL(this.imageFile);
   }
 
-  // Submit form
+  // Submit form to backend
   submitForm(): void {
-    console.log({
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      hobby: this.hobby,
-      topic: this.topic,
-      messageText: this.messageText,
-      imageFile: this.imageFile
-    });
 
-    // Reset form (optional)
+    // Prepare form data
+    const formData = new FormData();
+    formData.append('firstName', this.firstName);
+    formData.append('lastName', this.lastName);
+    formData.append('email', this.email);
+    formData.append('hobby', this.hobby);
+    formData.append('topic', this.topic);
+    formData.append('message', this.messageText);
+
+    if (this.imageFile) {
+      formData.append('image', this.imageFile, this.imageFile.name);
+    }
+
+    // POST request to backend
+    this.http.post('http://localhost:3000/messages', formData).subscribe({
+      next: (res) => {
+        console.log('Message sent:', res);
+        alert('Message sent successfully!');
+        this.resetForm(); // Reset form after successful submission
+      },
+      error: (err) => {
+        console.error('Error sending message:', err);
+        alert('Failed to send message.');
+      }
+    });
+  }
+
+  // Reset form fields and image preview
+  resetForm(): void {
     this.firstName = '';
     this.lastName = '';
     this.email = '';
@@ -69,8 +92,9 @@ export class MessageComponent {
     this.messageText = '';
     this.imageFile = null;
 
-    // Reset preview
-    this.imagePreview.nativeElement.src = '';
-    this.cardIcon.nativeElement.style.display = 'block';
+    if (this.imagePreview && this.cardIcon) {
+      this.imagePreview.nativeElement.src = '';
+      this.cardIcon.nativeElement.style.display = 'block';
+    }
   }
 }
