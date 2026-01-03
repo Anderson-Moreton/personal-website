@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { HttpClient } from '@angular/common/http';
-
+import { MessageService } from './message.service';
 @Component({
   selector: 'app-message',
   standalone: true,
@@ -33,7 +33,7 @@ export class MessageComponent {
   @ViewChild('cardIcon') cardIcon!: ElementRef<HTMLElement>;
 
   // Inject HttpClient
-  constructor(private http: HttpClient) {}
+  constructor(private messageService: MessageService) {}
 
   // Handle file input change
   onFileChange(event: Event): void {
@@ -52,10 +52,9 @@ export class MessageComponent {
     reader.readAsDataURL(this.imageFile);
   }
 
-  // Submit form to backend
+  // Submit form
   submitForm(): void {
 
-    // Prepare form data
     const formData = new FormData();
     formData.append('firstName', this.firstName);
     formData.append('lastName', this.lastName);
@@ -65,18 +64,18 @@ export class MessageComponent {
     formData.append('message', this.messageText);
 
     if (this.imageFile) {
-      formData.append('image', this.imageFile, this.imageFile.name);
+      formData.append('image', this.imageFile);
     }
 
-    // POST request to backend
-    this.http.post('http://localhost:3000/messages', formData).subscribe({
-      next: (res) => {
-        console.log('Message sent:', res);
+    // Use the service (correct architecture)
+    this.messageService.sendMessage(formData).subscribe({
+      next: (response) => {
+        console.log('Message sent:', response);
         alert('Message sent successfully!');
-        this.resetForm(); // Reset form after successful submission
+        this.resetForm();
       },
-      error: (err) => {
-        console.error('Error sending message:', err);
+      error: (error) => {
+        console.error('Error sending message:', error);
         alert('Failed to send message.');
       }
     });

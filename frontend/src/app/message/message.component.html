@@ -64,16 +64,22 @@
 
           <div class="col-md-6 offset-md-3 mb-2">
             <p class="mb-1">Hobby</p>
-            <div class="form-check form-check-inline" *ngFor="let option of ['Game','Study','Gym','Trip','Sport','Music']; let i = index">
+            <div
+              class="form-check form-check-inline"
+              *ngFor="
+                let option of ['Game', 'Study', 'Gym', 'Trip', 'Sport', 'Music'];
+                let i = index
+              "
+            >
               <input
                 class="form-check-input colorInput"
                 type="radio"
                 name="hobby"
-                [id]="'inlineRadio' + (i+1)"
+                [id]="'inlineRadio' + (i + 1)"
                 [value]="option"
                 [(ngModel)]="hobby"
               />
-              <label class="form-check-label" [for]="'inlineRadio' + (i+1)">{{ option }}</label>
+              <label class="form-check-label" [for]="'inlineRadio' + (i + 1)">{{ option }}</label>
             </div>
           </div>
 
@@ -85,10 +91,10 @@
               [(ngModel)]="topic"
               name="topic"
             >
-              <option disabled selected>Choose a topic</option>
-              <option>Praise</option>
-              <option>Suggestion</option>
-              <option>Criticism</option>
+              <option value="" disabled selected>Choose a topic</option>
+              <option value="Praise">Praise</option>
+              <option value="Suggestion">Suggestion</option>
+              <option value="Criticism">Criticism</option>
             </select>
           </div>
 
@@ -105,12 +111,7 @@
           </div>
 
           <div class="d-flex justify-content-center m-3">
-            <button
-              type="button"
-              id="buttonSubmit"
-              class="custom-btn mb-3"
-              (click)="submitForm()"
-            >
+            <button type="button" id="buttonSubmit" class="custom-btn mb-3" (click)="submitForm()">
               <i class="bi bi-upload me-2"></i> Submit
             </button>
           </div>
