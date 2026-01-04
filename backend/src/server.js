@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 
@@ -11,6 +12,9 @@ app.use(express.json());
 
 // Enable from-urlencoded parsing
 app.use(express.urlencoded({ extended: true }));
+
+// Serve uploaded images
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Routes - Import messages route
 const messagesRouter = require('./api/messages');

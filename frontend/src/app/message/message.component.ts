@@ -24,6 +24,7 @@ export class MessageComponent {
   hobby = '';
   topic = '';
   messageText = '';
+  showOnHome = false;
 
   // Image upload
   imageFile: File | null = null;
@@ -62,6 +63,7 @@ export class MessageComponent {
     formData.append('hobby', this.hobby);
     formData.append('topic', this.topic);
     formData.append('message', this.messageText);
+    formData.append('showOnHome', String(this.showOnHome ? '1' : '0'));
 
     if (this.imageFile) {
       formData.append('image', this.imageFile);
@@ -89,6 +91,7 @@ export class MessageComponent {
     this.hobby = '';
     this.topic = '';
     this.messageText = '';
+    this.showOnHome = false;
     this.imageFile = null;
 
     if (this.imagePreview && this.cardIcon) {
