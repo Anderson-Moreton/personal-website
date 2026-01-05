@@ -62,4 +62,29 @@ router.post(
   }
 );
 
+// GET /messages/home
+// Returns only messages allowed to appear on Home
+router.get('/home', async (req, res) => {
+  try {
+    const [rows] = await db.execute(
+      `SELECT
+        id,
+        first_name,
+        last_name,
+        hobby,
+        message,
+        image_url,
+        created_at
+      FROM messages
+      WHERE show_on_home = 1
+      ORDER BY created_at DESC`
+    );
+
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching home messages:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
+import { HomeService } from '../services/home.service';
 
 @Component({
   selector: 'app-home',
@@ -10,57 +11,32 @@ import { NavbarComponent } from '../shared/navbar/navbar.component';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  sidebarActive = false; // controls the sidebar
+  // Sidebar toggle
+  sidebarActive = false;
 
-  toggleSidebar() {
-    this.sidebarActive = !this.sidebarActive;
+  // Messages that will appear on Home (from backend)
+  homeMessages: any[] = [];
+
+  constructor(private homeService: HomeService) {}
+
+  ngOnInit(): void {
+    this.loadHomeMessages();
   }
 
-  // DEPOSITIONS (TESTIMONIALS)
-
-  depositions = [
-    {
-      name: 'Otávio Moreton',
-      hobby: 'Game',
-      image: 'assets/img/otavio-logo.jpg',
-      text: 'I love my dad. Congratulations for being such a dedicated student and always finding time to play with me.',
-      likes: 0,
-      liked: false
-    },
-    {
-      name: 'Priscila Moreton',
-      hobby: 'Trip',
-      image: 'assets/img/priscila-logo.jpeg',
-      text: 'Congratulations on your commitment and dedication, you are an example of determination. Keep it up! I love you!',
-      likes: 0,
-      liked: false
-    },
-    {
-      name: 'Isabelle Gomes Aciolly',
-      hobby: 'Music',
-      image: 'assets/img/isabelle-logo.jpg',
-      text: "Congratulations Anderson, your website looks amazing! I'm very proud of you and your hard work.",
-      likes: 0,
-      liked: false
-    },
-    {
-      name: 'Paulo Gabriel Moreton',
-      hobby: 'Sport',
-      image: 'assets/img/gabriel-logo.PNG',
-      text: "Dude, you're awesome! I really admire your dedication and effort. Keep it up, you'll go far! Hugs, brother!",
-      likes: 0,
-      liked: false
-    }
-  ];
-
-  // LIKE HANDLER
-
-  // Toggle like for a specific testimonial
-  toggleLike(depo: any): void {
-    depo.liked = !depo.liked;
-    depo.likes += depo.liked ? 1 : -1;
+  /**
+   * Load messages authorized to appear on Home
+   */
+  loadHomeMessages(): void {
+    this.homeService.getHomeMessages().subscribe({
+      next: (messages) => {
+        this.homeMessages = messages;
+        console.log('Home messages:', messages);
+      },
+      error: (error) => {
+        console.error('Error loading home messages:', error);
+      }
+    });
   }
-
 }
