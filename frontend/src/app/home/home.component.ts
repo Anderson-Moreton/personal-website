@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
-import { HomeService } from '../services/home.service';
 
 @Component({
   selector: 'app-home',
@@ -13,30 +13,25 @@ import { HomeService } from '../services/home.service';
 })
 export class HomeComponent implements OnInit {
 
-  // Sidebar toggle
   sidebarActive = false;
+  depositions: any[] = [];
 
-  // Messages that will appear on Home (from backend)
-  homeMessages: any[] = [];
-
-  constructor(private homeService: HomeService) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.loadHomeMessages();
+    // Initial load
+    this.depositions = this.route.snapshot.data['depositions'];
+
+    // IMPORTANT: listen to route data changes
+    this.route.data.subscribe(data => {
+      this.depositions = data['depositions'];
+    });
   }
 
-  /**
-   * Load messages authorized to appear on Home
-   */
-  loadHomeMessages(): void {
-    this.homeService.getHomeMessages().subscribe({
-      next: (messages) => {
-        this.homeMessages = messages;
-        console.log('Home messages:', messages);
-      },
-      error: (error) => {
-        console.error('Error loading home messages:', error);
-      }
-    });
+  toggleLike(depo: any): void {
+    if (depo.liked) return;
+
+    depo.likes = (depo.likes ?? 0) + 1;
+    depo.liked = true;
   }
 }

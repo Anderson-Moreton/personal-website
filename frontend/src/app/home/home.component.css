@@ -117,7 +117,7 @@
   font-size: 20px;
   color: #999;
   cursor: pointer;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition: color 0.3s ease;
 }
 
 .like-icon:hover {

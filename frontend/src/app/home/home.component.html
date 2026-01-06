@@ -48,7 +48,7 @@
               <div class="row g-3 align-items-stretch">
                 <div
                   class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 d-flex"
-                  *ngFor="let depo of homeMessages"
+                  *ngFor="let depo of depositions"
                 >
                   <div class="deposition card flex-fill h-100">
                     <!-- Header -->
@@ -68,6 +68,16 @@
                     <p class="depoiment">
                       {{ depo.message }}
                     </p>
+                    <!-- Like counter and heart -->
+                    <div class="like-container mt-auto">
+                      <i
+                        class="bi bi-heart-fill like-icon"
+                        [class.liked]="depo.liked"
+                        (click)="toggleLike(depo)"
+                      >
+                      </i>
+                      <span class="like-count">{{ depo.likes }}</span>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -3,13 +3,17 @@ const router = express.Router();
 const db = require('../db');
 const upload = require('../config/multer');
 
-// POST /messages
+/**
+ * POST /messages
+ * Receives a message with optional image
+ * Saves it into MySQL database
+ */
 router.post(
   '/',
-  upload.single('image'), // MULTER here
+  upload.single('image'), // Multer middleware (handles file upload)
   async (req, res) => {
     try {
-      // After multer, req.body EXISTS
+      // Multer ensures req.body exists even with FormData
       const {
         firstName,
         lastName,
@@ -25,8 +29,19 @@ router.post(
         return res.status(400).json({ error: 'Missing required fields.' });
       }
 
+      // Normalize checkbox value (VERY IMPORTANT)
+      const showOnHomeValue =
+        showOnHome === 'true' ||
+        showOnHome === '1' ||
+        showOnHome === 1 ||
+        showOnHome === 'on'
+          ? 1
+          : 0;
+
+      // Image path (if uploaded)
       const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
+      // Insert message into database
       const [result] = await db.execute(
         `INSERT INTO messages
         (first_name, last_name, email, hobby, topic, message, image_url, show_on_home)
@@ -39,10 +54,11 @@ router.post(
           topic,
           message,
           imageUrl,
-          showOnHome === 'true' ? 1 : 0
+          showOnHomeValue
         ]
       );
 
+      // Return created message
       res.status(201).json({
         id: result.insertId,
         firstName,
@@ -52,7 +68,7 @@ router.post(
         topic,
         message,
         imageUrl,
-        showOnHome
+        showOnHome: showOnHomeValue
       });
 
     } catch (error) {
@@ -62,8 +78,10 @@ router.post(
   }
 );
 
-// GET /messages/home
-// Returns only messages allowed to appear on Home
+/**
+ * GET /messages/home
+ * Returns only messages allowed to appear on Home page
+ */
 router.get('/home', async (req, res) => {
   try {
     const [rows] = await db.execute(
@@ -83,6 +101,53 @@ router.get('/home', async (req, res) => {
     res.json(rows);
   } catch (error) {
     console.error('Error fetching home messages:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /messages/:id/like
+router.post('/:id/like', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Insert like
+    await db.execute(
+      'INSERT INTO message_likes (message_id) VALUES (?)',
+      [id]
+    );
+
+    // Get updated like count
+    const [rows] = await db.execute(
+      'SELECT COUNT(*) AS likes FROM message_likes WHERE message_id = ?',
+      [id]
+    );
+
+    res.json({
+      messageId: id,
+      likes: rows[0].likes
+    });
+
+  } catch (error) {
+    console.error('Error liking message:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// GET /messages/:id/likes
+// Returns total likes for a message
+router.get('/:id/likes', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const [rows] = await db.execute(
+      `SELECT COUNT(*) AS total FROM message_likes WHERE message_id = ?`,
+      [id]
+    );
+
+    res.json({ likes: rows[0].total });
+
+  } catch (error) {
+    console.error('Error fetching likes:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
