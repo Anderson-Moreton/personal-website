@@ -152,4 +152,21 @@ router.get('/:id/likes', async (req, res) => {
   }
 });
 
+// DELETE /messages/:id/like
+router.delete('/:id/like', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await db.execute(
+      'DELETE FROM message_likes WHERE message_id = ? LIMIT 1',
+      [id]
+    );
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error removing like:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;

@@ -11,39 +11,35 @@ export class HomeService {
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * Get messages allowed to appear on Home
-   */
-  getHomeMessages(): Observable<any[]> {
+  // Get messages allowed to appear on Home
+  getHomeMessages() {
     return this.http.get<any[]>(`${this.API_URL}/home`).pipe(
       map(messages =>
-        messages.map(message => ({
-          ...message,
-          likes: 0,
+        messages.map(m => ({
+          ...m,
+          likes: Number(m.likes ?? 0),
           liked: false
         }))
       )
     );
   }
 
-  /**
-   * Get total likes for a message
-   */
-  getLikes(messageId: number): Observable<number> {
-    return this.http.get<{ total: number }>(
-      `${this.API_URL}/${messageId}/likes`
-    ).pipe(
-      map(res => res.total)
+  likeMessage(messageId: number) {
+  return this.http.post(
+    `${this.API_URL}/${messageId}/like`,
+    {}
+  );
+}
+
+  unlikeMessage(messageId: number) {
+    return this.http.delete(
+      `${this.API_URL}/${messageId}/like`
     );
   }
 
-  /**
-   * Add a like to a message
-   */
-  likeMessage(messageId: number): Observable<any> {
-    return this.http.post(
-      `${this.API_URL}/${messageId}/like`,
-      {}
+  getLikes(messageId: number) {
+    return this.http.get<{ total: number }>(
+      `http://localhost:3000/messages/${messageId}/likes`
     );
   }
 }

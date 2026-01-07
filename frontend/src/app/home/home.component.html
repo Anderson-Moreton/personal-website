@@ -71,11 +71,10 @@
                     <!-- Like counter and heart -->
                     <div class="like-container mt-auto">
                       <i
-                        class="bi bi-heart-fill like-icon"
-                        [class.liked]="depo.liked"
+                        class="like-icon"
+                        [ngClass]="depo.liked ? 'bi-heart-fill liked' : 'bi-heart'"
                         (click)="toggleLike(depo)"
-                      >
-                      </i>
+                      ></i>
                       <span class="like-count">{{ depo.likes }}</span>
                     </div>
                   </div>
