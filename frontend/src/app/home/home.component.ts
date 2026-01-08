@@ -26,16 +26,17 @@ export class HomeComponent implements OnInit {
     // Initial load from resolver
     this.depositions = this.route.snapshot.data['depositions'];
 
-    // IMPORTANT: listen to resolver updates when navigating
+    // Listen to resolver updates (important for navigation)
     this.route.data.subscribe(data => {
       this.depositions = data['depositions'];
       this.restoreLikesFromLocalStorage();
-      this.loadLikesFromBackend();
     });
   }
 
   /**
-   * Toggle like / unlike with optimistic UI
+   * Toggle like / unlike
+   * Backend = source of truth for count
+   * localStorage = prevent multiple likes
    */
   toggleLike(depo: any): void {
     depo.likes = Number(depo.likes ?? 0);
@@ -73,9 +74,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  /**
-   * Restore liked state from localStorage after refresh
-   */
+  // Restore only the liked state (NOT the counter)
   private restoreLikesFromLocalStorage(): void {
     this.depositions.forEach(depo => {
       const liked = localStorage.getItem(`liked_message_${depo.id}`);
@@ -83,30 +82,13 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  /**
-   * Save like locally to prevent multiple likes
-   */
+  // Save like locally
   private saveLike(messageId: number): void {
     localStorage.setItem(`liked_message_${messageId}`, 'true');
   }
 
-  /**
-   * Remove like locally
-   */
+  // Remove like locally
   private removeLike(messageId: number): void {
     localStorage.removeItem(`liked_message_${messageId}`);
-  }
-
-  private loadLikesFromBackend(): void {
-   this.depositions.forEach(depo => {
-     this.homeService.getLikes(depo.id).subscribe({
-       next: res => {
-         depo.likes = Number(res.total ?? 0);
-       },
-       error: () => {
-         depo.likes = 0;
-        }
-      });
-    });
   }
 }

@@ -8,8 +8,8 @@
 }
 
 .form-upload h4 {
-  margin-bottom: 20px;
   font-size: 22px;
+  margin-bottom: -30px;
 }
 
 .box {
@@ -68,8 +68,8 @@ form .heightInput {
 }
 
 form .colorInput:focus {
-  border-color: #3effbe; /* Muda a cor para azul quando focado */
-  outline: none; /* Opcional: remove o contorno padrão azul/preto */
+  border-color: #3effbe; 
+  outline: none; 
 }
 
 input[type="radio"]:checked {

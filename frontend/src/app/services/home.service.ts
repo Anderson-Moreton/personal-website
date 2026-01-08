@@ -38,8 +38,12 @@ export class HomeService {
   }
 
   getLikes(messageId: number) {
-    return this.http.get<{ total: number }>(
-      `http://localhost:3000/messages/${messageId}/likes`
-    );
-  }
+    return this.http
+      .get<{ likes: number }>(
+        `http://localhost:3000/messages/${messageId}/likes`
+      )
+      .pipe(
+        map(res => res.likes)
+      );
+    }
 }
