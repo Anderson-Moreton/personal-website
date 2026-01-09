@@ -5,6 +5,7 @@ import { AboutMeComponent } from './about-me/about-me.component';
 import { MessageComponent } from './message/message.component';
 import { MyRepositoryComponent } from './my-repository/my-repository.component';
 import { ComingSoonComponent } from './pages/coming-soon/coming-soon.component';
+import { AdminComponent } from './admin/admin.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,5 +21,6 @@ export const routes: Routes = [
   { path: 'about-me', component: AboutMeComponent },
   { path: 'message', component: MessageComponent },
   { path: 'my-repository', component: MyRepositoryComponent },
-  { path: 'coming-soon', component: ComingSoonComponent }
+  { path: 'coming-soon', component: ComingSoonComponent },
+  { path: 'admin', component: AdminComponent}
 ];
