@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { AdminService } from '../services/admin.service';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin',
@@ -17,37 +19,56 @@ export class AdminComponent implements OnInit {
   pendingMessages: any[] = [];
   loading = true;
 
-  constructor(private adminService: AdminService) {}
+  constructor(
+    private adminService: AdminService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
+    // Load when component starts
     this.loadPendingMessages();
+
+    // IMPORTANT: reload when navigating to /admin again
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(event => {
+        if (this.router.url === '/admin') {
+          this.loadPendingMessages();
+        }
+      });
   }
 
   loadPendingMessages(): void {
-    this.loading = true;
+   this.loading = true;
 
-    this.adminService.getPendingMessages().subscribe({
-      next: (messages) => {
-        console.log('Pending messages:', messages);
-        this.pendingMessages = messages;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading pending messages:', error);
-        this.loading = false;
+   this.adminService.getPendingMessages().subscribe({
+     next: (messages) => {
+       console.log('Pending messages:', messages);
+
+       this.pendingMessages = [...messages];
+       this.loading = false;
+
+      // 🔥 Force view update
+       this.cdr.detectChanges();
+     },
+     error: (error) => {
+       console.error('Error loading pending messages:', error);
+       this.loading = false;
       }
     });
   }
 
   approve(id: number): void {
     this.adminService.approveMessage(id).subscribe(() => {
-      this.loadPendingMessages(); // reload list
+      // remove locally (UX instantâneo)
+      this.pendingMessages = this.pendingMessages.filter(m => m.id !== id);
     });
   }
 
   reject(id: number): void {
     this.adminService.rejectMessage(id).subscribe(() => {
-      this.loadPendingMessages(); // reload list
+      this.pendingMessages = this.pendingMessages.filter(m => m.id !== id);
     });
   }
 }

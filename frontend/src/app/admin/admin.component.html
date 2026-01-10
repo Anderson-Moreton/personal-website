@@ -7,24 +7,13 @@
     <main class="container mt-3">
       <h3>Admin – Pending Messages</h3>
 
-      <!-- Loading -->
       <p *ngIf="loading">Loading...</p>
 
-      <!-- Empty state -->
-      <div *ngIf="!loading && pendingMessages.length === 0">
-        No pending messages.
-      </div>
-
-      <!-- Messages -->
-      <div class="row g-3">
-        <div
-          class="col-md-6 col-lg-4"
-          *ngFor="let msg of pendingMessages"
-        >
+      <div class="row g-3" *ngIf="!loading && pendingMessages.length > 0">
+        <div class="col-md-6 col-lg-4" *ngFor="let msg of pendingMessages">
           <div class="card h-100">
             <div class="card-body">
               <h5>{{ msg.first_name }} {{ msg.last_name }}</h5>
-
               <p><strong>Topic:</strong> {{ msg.topic }}</p>
               <p>{{ msg.message }}</p>
 
@@ -35,19 +24,8 @@
               />
 
               <div class="d-flex justify-content-between mt-3">
-                <button
-                  class="btn btn-success"
-                  (click)="approve(msg.id)"
-                >
-                  Approve
-                </button>
-
-                <button
-                  class="btn btn-danger"
-                  (click)="reject(msg.id)"
-                >
-                  Reject
-                </button>
+                <button class="btn btn-success" (click)="approve(msg.id)">Approve</button>
+                <button class="btn btn-danger" (click)="reject(msg.id)">Reject</button>
               </div>
             </div>
           </div>
