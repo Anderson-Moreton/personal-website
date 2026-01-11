@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const authAdmin = require('../middlewares/authAdmin');
 
 /**
  * GET /admin/pending
  * Returns messages waiting for approval
  */
-router.get('/pending', async (req, res) => {
+router.get('/pending', authAdmin, async (req, res) => {
   try {
     const [rows] = await db.execute(`
       SELECT
@@ -36,7 +39,7 @@ router.get('/pending', async (req, res) => {
 /**
  * PUT /admin/messages/:id/approve
  */
-router.put('/messages/:id/approve', async (req, res) => {
+router.put('/messages/:id/approve', authAdmin, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -55,7 +58,7 @@ router.put('/messages/:id/approve', async (req, res) => {
 /**
  * PUT /admin/messages/:id/reject
  */
-router.put('/messages/:id/reject', async (req, res) => {
+router.put('/messages/:id/reject', authAdmin, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -67,6 +70,40 @@ router.put('/messages/:id/reject', async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     console.error('Error rejecting message:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+/**
+ * POST /admin/login
+ * Admin authentication
+ */
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password required' });
+    }
+
+    if (email !== 'admin@personal.com' || password !== 'admin123') {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // TOKEN
+    const token = jwt.sign(
+      { role: 'admin', email },
+      process.env.JWT_SECRET,
+      { expiresIn: '2h' }
+    );
+
+    res.json({
+      success: true,
+      token
+    });
+
+  } catch (error) {
+    console.error('Admin login error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
