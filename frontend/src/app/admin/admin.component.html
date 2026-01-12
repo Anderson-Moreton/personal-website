@@ -5,8 +5,16 @@
     <app-navbar (toggleSidebarEvent)="sidebarActive = !sidebarActive"></app-navbar>
 
     <main class="container mt-3">
-      <h3>Admin – Pending Messages</h3>
-
+      <div class="d-flex justify-content-between mb-3">
+        <h3>Admin – Pending Messages</h3>
+        <button
+          class="btn btn-outline-danger btn-sm"
+          (click)="logout()"
+        >
+          Logout
+        </button>
+      </div>
+      
       <p *ngIf="loading">Loading...</p>
 
       <div class="row g-3" *ngIf="!loading && pendingMessages.length > 0">

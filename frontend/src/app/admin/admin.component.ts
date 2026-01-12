@@ -5,6 +5,7 @@ import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { AdminService } from '../services/admin.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-admin',
@@ -22,7 +23,8 @@ export class AdminComponent implements OnInit {
   constructor(
     private adminService: AdminService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +51,7 @@ export class AdminComponent implements OnInit {
        this.pendingMessages = [...messages];
        this.loading = false;
 
-      // 🔥 Force view update
+      // Force view update
        this.cdr.detectChanges();
      },
      error: (error) => {
@@ -70,5 +72,10 @@ export class AdminComponent implements OnInit {
     this.adminService.rejectMessage(id).subscribe(() => {
       this.pendingMessages = this.pendingMessages.filter(m => m.id !== id);
     });
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/home']);
   }
 }
