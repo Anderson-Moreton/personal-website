@@ -8,125 +8,117 @@
 
     <main>
       <div class="container">
-        <div class="form-upload mt-3">
-          <h4>Leave your message</h4>
-          <div class="picture-message">
-            <form class="box" id="form-form">
-              <div class="image-upload box">
-                <img #imagePreview id="image-preview" src="" class="picture-message h-100" />
-                <i #cardIcon class="bi bi-card-image"></i>
-                <input
-                  id="image-field"
-                  type="file"
-                  accept="image/*"
-                  (change)="onFileChange($event)"
-                />
+        <form (ngSubmit)="submitForm()">
+          <div class="form-upload mt-3">
+            <h4>Leave your message</h4>
+            <div class="picture-message">
+              <div class="box" id="image-form">
+                <div class="image-upload box">
+                  <img #imagePreview id="image-preview" src="" class="picture-message h-100" />
+                  <i #cardIcon class="bi bi-card-image"></i>
+                  <input
+                    id="image-field"
+                    type="file"
+                    accept="image/*"
+                    (change)="onFileChange($event)"
+                  />
+                </div>
               </div>
-            </form>
+            </div>
           </div>
-        </div>
-
-        <form>
           <div class="d-flex justify-content-center">
             <div class="col-4 col-md-2 mb-1 me-2">
-              <label for="inputEmail4">First Name</label>
+              <label>First Name</label>
               <input
                 type="text"
                 class="form-control colorInput heightInput"
-                id="inputEmail4"
                 [(ngModel)]="firstName"
                 name="firstName"
+                required
               />
             </div>
             <div class="col-8 col-md-4 mb-1">
-              <label for="inputPassword4">Last Name</label>
+              <label>Last Name</label>
               <input
                 type="text"
                 class="form-control colorInput heightInput"
-                id="inputPassword4"
                 [(ngModel)]="lastName"
                 name="lastName"
+                required
               />
             </div>
           </div>
-
           <div class="col-md-6 offset-md-3 mb-1">
-            <label for="exampleFormControlInput1" class="form-label">Email Address</label>
+            <label>Email Address</label>
             <input
               type="email"
               class="form-control colorInput heightInput"
-              id="exampleFormControlInput1"
-              placeholder="nome@exemplo.com"
+              placeholder="name@example.com"
               [(ngModel)]="email"
               name="email"
+              required
             />
           </div>
-
           <div class="col-md-6 offset-md-3 mb-1">
             <p class="mb-1">Hobby</p>
+
             <div
               class="form-check form-check-inline"
-              *ngFor="
-                let option of ['Game', 'Study', 'Gym', 'Trip', 'Sport', 'Music'];
-                let i = index
-              "
+              *ngFor="let option of ['Game','Study','Gym','Trip','Sport','Music']; let i = index"
             >
               <input
-                class="form-check-input colorInput"
+                class="form-check-input"
                 type="radio"
+                [id]="'hobby' + i"
                 name="hobby"
-                [id]="'inlineRadio' + (i + 1)"
                 [value]="option"
                 [(ngModel)]="hobby"
               />
-              <label class="form-check-label" [for]="'inlineRadio' + (i + 1)">{{ option }}</label>
+              <label class="form-check-label" [for]="'hobby' + i">
+                {{ option }}
+              </label>
             </div>
           </div>
-
           <div class="col-md-6 offset-md-3 mb-1">
-            <label for="exampleFormControlSelect1" class="form-label">Topic</label>
+            <label>Topic</label>
             <select
               class="form-control colorInput heightInput"
-              id="exampleFormControlSelect1"
               [(ngModel)]="topic"
               name="topic"
+              required
             >
-              <option value="" disabled selected>Choose a topic</option>
+              <option value="" disabled>Choose a topic</option>
               <option value="Praise">Praise</option>
               <option value="Suggestion">Suggestion</option>
               <option value="Criticism">Criticism</option>
             </select>
           </div>
-
           <div class="col-md-6 offset-md-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Leave your message</label>
+            <label>Leave your message</label>
             <textarea
               class="form-control colorInput"
-              id="exampleFormControlTextarea1"
               rows="2"
               placeholder="Write your message here..."
               [(ngModel)]="messageText"
               name="messageText"
+              required
             ></textarea>
           </div>
-
           <div class="col-md-6 offset-md-3 mt-1">
             <div class="form-check">
               <input
                 class="form-check-input"
                 type="checkbox"
-                id="showOnHome"
                 [(ngModel)]="showOnHome"
                 name="showOnHome"
               />
-              <label class="form-check-label" for="showOnHome">
+              <label class="form-check-label">
                 I allow this message to be shown on the Home page
               </label>
             </div>
           </div>
-
           <div class="d-flex justify-content-center m-3">
-            <button type="button" id="buttonSubmit" class="custom-btn mb-3" (click)="submitForm()">
+            <button type="submit" id="buttonSubmit" class="custom-btn mb-3">
               <i class="bi bi-upload me-2"></i> Submit
             </button>
           </div>

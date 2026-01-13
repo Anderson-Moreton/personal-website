@@ -29,6 +29,10 @@ export class MessageComponent {
   // Image upload
   imageFile: File | null = null;
 
+  private isValidEmail(email: string): boolean{
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  }
+
   // Template element references
   @ViewChild('imagePreview') imagePreview!: ElementRef<HTMLImageElement>;
   @ViewChild('cardIcon') cardIcon!: ElementRef<HTMLElement>;
@@ -56,13 +60,18 @@ export class MessageComponent {
   // Submit form
   submitForm(): void {
 
+    if (!this.isValidEmail(this.email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
     const formData = new FormData();
-    formData.append('firstName', this.firstName);
-    formData.append('lastName', this.lastName);
-    formData.append('email', this.email);
+    formData.append('firstName', this.firstName.trim());
+    formData.append('lastName', this.lastName.trim());
+    formData.append('email', this.email.trim());
     formData.append('hobby', this.hobby);
     formData.append('topic', this.topic);
-    formData.append('message', this.messageText);
+    formData.append('message', this.messageText.trim());
     formData.append('showOnHome', String(this.showOnHome ? '1' : '0'));
 
     if (this.imageFile) {

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const upload = require('../config/multer');
+const { messageRateLimiter } = require('../middlewares/rateLimit');
 
 /**
  * POST /messages
@@ -10,9 +11,15 @@ const upload = require('../config/multer');
  */
 router.post(
   '/',
+  messageRateLimiter,
   upload.single('image'), // Multer middleware (handles file upload)
   async (req, res) => {
     try {
+
+      console.log('--- DEBUG FORM DATA ---');
+      console.log('BODY:', req.body);
+      console.log('FILE:', req.file);
+      console.log('HEADERS:', req.headers['content-type']);
       // Multer ensures req.body exists even with FormData
       const {
         firstName,
