@@ -1,0 +1,56 @@
+<h5 class="mb-3">Leave a testimonial</h5>
+
+<form>
+  <div class="picture-message mb-3">
+    <div class="box" id="image-form">
+      <div class="image-upload box">
+        <img #imagePreview id="image-preview" src="" class="picture-message h-100" />
+        <i #cardIcon class="bi bi-card-image"></i>
+        <input id="image-field" type="file" accept="image/*" (change)="onFileChange($event)" />
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-6">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="First name"
+        [(ngModel)]="firstName"
+        name="firstName"
+      />
+    </div>
+
+    <div class="col-6">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Last name"
+        [(ngModel)]="lastName"
+        name="lastName"
+      />
+    </div>
+  </div>
+
+  <input
+    type="email"
+    class="form-control mb-2"
+    placeholder="Email"
+    [(ngModel)]="email"
+    name="email"
+  />
+
+  <textarea
+    class="form-control mb-2"
+    rows="3"
+    placeholder="Your message"
+    [(ngModel)]="messageText"
+    name="messageText"
+  ></textarea>
+
+  <div class="d-flex justify-content-end gap-2">
+    <button type="button" id="buttonCancel" (click)="cancel()">Cancel</button>
+    <button type="button" id="buttonSubmit" (click)="submit()">Send</button>
+  </div>
+</form>

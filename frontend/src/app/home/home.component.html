@@ -40,8 +40,11 @@
         </section>
         <!-- Depositions Section -->
         <section id="depositions" class="container mt-1 mb-1">
-          <div class="title-depositions col-12 d-flex justify-content-center align-items-center">
-            <h4 class="section-title mt-1">Testimonials</h4>
+          <div class="title-depositions col-12 d-flex justify-content-between">
+            <h4 class="section-title my-auto mx-auto">Testimonials</h4>
+            <button type="button" class="add-deposition-icon my-auto me-4" (click)="openModal()">
+              <i class="bi bi-plus-circle">Add</i>
+            </button>
           </div>
           <div class="card-deposition mt-3">
             <div class="container">
@@ -83,6 +86,13 @@
             </div>
           </div>
         </section>
+        <!-- Message Modal -->
+        <div class="custom-modal-backdrop" [class.with-sidebar]="sidebarActive" *ngIf="isModalOpen">
+          <div class="custom-modal">
+            <button class="close-btn" (click)="closeModal()">×</button>
+            <app-message-modal (close)="closeModal()"></app-message-modal>
+          </div>
+        </div>
       </div>
     </main>
   </div>

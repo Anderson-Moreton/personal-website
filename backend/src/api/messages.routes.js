@@ -16,10 +16,6 @@ router.post(
   async (req, res) => {
     try {
 
-      console.log('--- DEBUG FORM DATA ---');
-      console.log('BODY:', req.body);
-      console.log('FILE:', req.file);
-      console.log('HEADERS:', req.headers['content-type']);
       // Multer ensures req.body exists even with FormData
       const {
         firstName,

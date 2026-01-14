@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
-import { HttpClient } from '@angular/common/http';
 import { MessageService } from './message.service';
 @Component({
   selector: 'app-message',

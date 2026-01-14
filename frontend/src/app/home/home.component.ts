@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { HomeService } from '../services/home.service';
+import { MessageModalComponent } from '../message-modal/message-modal.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, SidebarComponent, NavbarComponent],
+  imports: [CommonModule, SidebarComponent, NavbarComponent, MessageModalComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit {
 
   sidebarActive = false;
   depositions: any[] = [];
+  isModalOpen = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -91,4 +93,15 @@ export class HomeComponent implements OnInit {
   private removeLike(messageId: number): void {
     localStorage.removeItem(`liked_message_${messageId}`);
   }
+
+  // Open modal
+  openModal(): void {
+    this.isModalOpen = true;
+  }
+
+  // Close modal
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
+
 }

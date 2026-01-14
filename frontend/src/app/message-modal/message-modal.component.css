@@ -1,0 +1,132 @@
+/* MODAL BACKDROP */
+.custom-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .custom-modal-backdrop.with-sidebar {
+    left: var(--sidebar-width);
+    width: calc(100vw - var(--sidebar-width));
+  }
+}
+
+/* MODAL CONTAINER */
+.custom-modal {
+  background: #ffffff;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  border-radius: 12px;
+  padding: 1.5rem;
+  overflow-y: auto;
+  position: relative;
+  animation: modalFadeIn 0.25s ease;
+}
+
+/* IMAGE UPLOAD */
+.picture-message {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.image-upload {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border: 1px solid #b1adae;
+  border-radius: 50%;
+  box-shadow: 1px 3px 12px #1c1c1c;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-upload img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  text-indent: -9999px; /* Hide the image if no source is set */
+}
+
+.image-upload i {
+  position: absolute;
+  font-size: 30px;
+  color: #1c1c1c;
+}
+
+.image-upload input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* BUTTONS */
+#buttonSubmit {
+  background-color: #060d15;
+  color: #ffffff;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 18px;
+  box-shadow: 1px 3px 12px #1c1c1c;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#buttonSubmit:hover {
+  background-color: #0a1625;
+  color: #3effbe;
+  transform: scale(1.05);
+}
+
+#buttonCancel {
+  background-color: #e67676;
+  color: #0a1625;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 12px;
+  box-shadow: 1px 3px 12px #1c1c1c;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#buttonCancel:hover {
+  background-color: #f54141;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* ANIMATION */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* RESPONSIVE*/
+@media (max-width: 576px) {
+  .custom-modal {
+    max-width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+}
