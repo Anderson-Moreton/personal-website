@@ -151,24 +151,34 @@
   color: #e63946;
 } 
 
-/* Custom Modal Styles */
+/* MODAL BACKDROP */
 .custom-modal-backdrop {
-  position: fixed;
+  position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 2000;
+  padding: 1rem;
 }
 
+.custom-modal-backdrop.with-sidebar {
+  margin-left: var(--sidebar-width);
+  width: calc(100vw - var(--sidebar-width));
+}
+
+/* MODAL CONTAINER */
 .custom-modal {
-  background: #fff;
+  background: #ffffff;
   width: 100%;
   max-width: 600px;
-  border-radius: 8px;
-  padding: 20px;
+  max-height: 90vh;
+  border-radius: 12px;
+  padding: 1.5rem;
+  overflow-y: auto;
   position: relative;
+  animation: modalFadeIn 0.25s ease;
 }
 
 .close-btn {
@@ -179,17 +189,4 @@
   background: transparent;
   font-size: 22px;
   cursor: pointer;
-}
-
-.custom-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  z-index: 1000;
-  padding: 1rem; 
 }

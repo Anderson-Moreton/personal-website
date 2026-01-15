@@ -22,6 +22,7 @@ export class MessageModalComponent {
   topic = '';
   messageText = '';
   showOnHome = true; // default true for testimonials
+  
   // Image upload
   imageFile: File | null = null;
 
