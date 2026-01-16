@@ -28,7 +28,7 @@ export const routes: Routes = [
   { path: 'coming-soon', component: ComingSoonComponent },
 
   // Admin Login (PUBLIC)
-  { path: 'admin-login', component: AdminLoginComponent },
+  { path: 'admin/login', component: AdminLoginComponent },
 
   // Admin Panel (PROTECTED)
   {

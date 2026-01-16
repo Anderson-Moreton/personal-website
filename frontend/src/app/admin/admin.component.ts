@@ -17,6 +17,7 @@ import { AuthService } from '../services/auth.service';
 export class AdminComponent implements OnInit {
 
   sidebarActive = false;
+  pendingTestimonials: any[] = [];
   pendingMessages: any[] = [];
   loading = true;
 
@@ -28,54 +29,88 @@ export class AdminComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Load when component starts
-    this.loadPendingMessages();
-
-    // IMPORTANT: reload when navigating to /admin again
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(event => {
-        if (this.router.url === '/admin') {
-          this.loadPendingMessages();
-        }
-      });
+    this.loadPendingTestimonials();
   }
 
-  loadPendingMessages(): void {
-   this.loading = true;
+  loadPendingTestimonials(): void {
+    this.loading = true;
 
-   this.adminService.getPendingMessages().subscribe({
-     next: (messages) => {
-       console.log('Pending messages:', messages);
-
-       this.pendingMessages = [...messages];
-       this.loading = false;
-
-      // Force view update
-       this.cdr.detectChanges();
-     },
-     error: (error) => {
-       console.error('Error loading pending messages:', error);
-       this.loading = false;
+    this.adminService.getPendingTestimonials().subscribe({
+      next: (data) => {
+        this.pendingTestimonials = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading testimonials', err);
+        this.loading = false;
       }
     });
   }
 
   approve(id: number): void {
-    this.adminService.approveMessage(id).subscribe(() => {
-      // remove locally (UX instantâneo)
-      this.pendingMessages = this.pendingMessages.filter(m => m.id !== id);
+    this.adminService.approveTestimonial(id).subscribe(() => {
+      this.pendingTestimonials =
+        this.pendingTestimonials.filter(t => t.id !== id);
     });
   }
 
   reject(id: number): void {
-    this.adminService.rejectMessage(id).subscribe(() => {
-      this.pendingMessages = this.pendingMessages.filter(m => m.id !== id);
+    this.adminService.rejectTestimonial(id).subscribe(() => {
+      this.pendingTestimonials =
+        this.pendingTestimonials.filter(t => t.id !== id);
     });
   }
 
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/home']);
-  }
+
+  // ngOnInit(): void {
+  //   // Load when component starts
+  //   this.loadPendingMessages();
+
+  //   // IMPORTANT: reload when navigating to /admin again
+  //   this.router.events
+  //     .pipe(filter(event => event instanceof NavigationEnd))
+  //     .subscribe(event => {
+  //       if (this.router.url === '/admin') {
+  //         this.loadPendingMessages();
+  //       }
+  //     });
+  // }
+
+  // loadPendingMessages(): void {
+  //  this.loading = true;
+
+  //  this.adminService.getPendingMessages().subscribe({
+  //    next: (messages) => {
+  //      console.log('Pending messages:', messages);
+
+  //      this.pendingMessages = [...messages];
+  //      this.loading = false;
+
+  //     // Force view update
+  //      this.cdr.detectChanges();
+  //    },
+  //    error: (error) => {
+  //      console.error('Error loading pending messages:', error);
+  //      this.loading = false;
+  //     }
+  //   });
+  // }
+
+  // approve(id: number): void {
+  //   this.adminService.approveMessage(id).subscribe(() => {
+  //     // remove locally (UX instantâneo)
+  //     this.pendingMessages = this.pendingMessages.filter(m => m.id !== id);
+  //   });
+  // }
+
+  // reject(id: number): void {
+  //   this.adminService.rejectMessage(id).subscribe(() => {
+  //     this.pendingMessages = this.pendingMessages.filter(m => m.id !== id);
+  //   });
+  // }
+
+  // logout(): void {
+  //   this.authService.logout();
+  //   this.router.navigate(['/home']);
+  // }
 }

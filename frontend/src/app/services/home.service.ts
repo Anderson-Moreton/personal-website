@@ -1,49 +1,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin, map } from 'rxjs';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HomeService {
 
-  private API_URL = 'http://localhost:3000/messages';
+  private API_URL = 'http://localhost:3000/testimonials';
 
   constructor(private http: HttpClient) {}
 
-  // Get messages allowed to appear on Home
+  // Get approved testimonials for Home
   getHomeMessages() {
     return this.http.get<any[]>(`${this.API_URL}/home`).pipe(
-      map(messages =>
-        messages.map(m => ({
-          ...m,
-          likes: Number(m.likes ?? 0),
+      map(items =>
+        items.map(t => ({
+          ...t,
+          likes: Number(t.likes ?? 0),
           liked: false
         }))
       )
     );
   }
 
-  likeMessage(messageId: number) {
-  return this.http.post(
-    `${this.API_URL}/${messageId}/like`,
-    {}
-  );
-}
-
-  unlikeMessage(messageId: number) {
-    return this.http.delete(
-      `${this.API_URL}/${messageId}/like`
+  likeMessage(testimonialId: number) {
+    return this.http.post(
+      `${this.API_URL}/${testimonialId}/like`,
+      {}
     );
   }
 
-  getLikes(messageId: number) {
-    return this.http
-      .get<{ likes: number }>(
-        `http://localhost:3000/messages/${messageId}/likes`
-      )
-      .pipe(
-        map(res => res.likes)
-      );
-    }
+  unlikeMessage(testimonialId: number) {
+    return this.http.delete(
+      `${this.API_URL}/${testimonialId}/like`
+    );
+  }
 }

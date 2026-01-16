@@ -9,25 +9,11 @@
     <main>
       <div class="container">
         <form (ngSubmit)="submitForm()">
-          <div class="form-upload mt-3">
+          <div class="form-upload">
             <h4>Leave your message</h4>
-            <div class="picture-message">
-              <div class="box" id="image-form">
-                <div class="image-upload box">
-                  <img #imagePreview id="image-preview" src="" class="picture-message h-100" />
-                  <i #cardIcon class="bi bi-card-image"></i>
-                  <input
-                    id="image-field"
-                    type="file"
-                    accept="image/*"
-                    (change)="onFileChange($event)"
-                  />
-                </div>
-              </div>
-            </div>
           </div>
           <div class="d-flex justify-content-center">
-            <div class="col-4 col-md-2 mb-1 me-2">
+            <div class="col-4 col-md-2 mb-3">
               <label>First Name</label>
               <input
                 type="text"
@@ -37,7 +23,7 @@
                 required
               />
             </div>
-            <div class="col-8 col-md-4 mb-1">
+            <div class="col-8 col-md-4 mb-3 ms-2">
               <label>Last Name</label>
               <input
                 type="text"
@@ -48,7 +34,7 @@
               />
             </div>
           </div>
-          <div class="col-md-6 offset-md-3 mb-1">
+          <div class="col-md-6 offset-md-3 mb-3">
             <label>Email Address</label>
             <input
               type="email"
@@ -59,41 +45,7 @@
               required
             />
           </div>
-          <div class="col-md-6 offset-md-3 mb-1">
-            <p class="mb-1">Hobby</p>
-
-            <div
-              class="form-check form-check-inline"
-              *ngFor="let option of ['Game','Study','Gym','Trip','Sport','Music']; let i = index"
-            >
-              <input
-                class="form-check-input"
-                type="radio"
-                [id]="'hobby' + i"
-                name="hobby"
-                [value]="option"
-                [(ngModel)]="hobby"
-              />
-              <label class="form-check-label" [for]="'hobby' + i">
-                {{ option }}
-              </label>
-            </div>
-          </div>
-          <div class="col-md-6 offset-md-3 mb-1">
-            <label>Topic</label>
-            <select
-              class="form-control colorInput heightInput"
-              [(ngModel)]="topic"
-              name="topic"
-              required
-            >
-              <option value="" disabled>Choose a topic</option>
-              <option value="Praise">Praise</option>
-              <option value="Suggestion">Suggestion</option>
-              <option value="Criticism">Criticism</option>
-            </select>
-          </div>
-          <div class="col-md-6 offset-md-3">
+          <div class="col-md-6 offset-md-3 mb-5">
             <label>Leave your message</label>
             <textarea
               class="form-control colorInput"
@@ -103,19 +55,6 @@
               name="messageText"
               required
             ></textarea>
-          </div>
-          <div class="col-md-6 offset-md-3 mt-1">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                [(ngModel)]="showOnHome"
-                name="showOnHome"
-              />
-              <label class="form-check-label">
-                I allow this message to be shown on the Home page
-              </label>
-            </div>
           </div>
           <div class="d-flex justify-content-center m-3">
             <button type="submit" id="buttonSubmit" class="custom-btn mb-3">

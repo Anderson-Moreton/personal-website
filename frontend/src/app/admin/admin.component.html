@@ -5,35 +5,31 @@
     <app-navbar (toggleSidebarEvent)="sidebarActive = !sidebarActive"></app-navbar>
 
     <main class="container mt-3">
-      <div class="d-flex justify-content-between mb-3">
-        <h3>Admin – Pending Messages</h3>
-        <button
-          class="btn btn-outline-danger btn-sm"
-          (click)="logout()"
-        >
-          Logout
-        </button>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Admin – Pending Testimonials</h3>
       </div>
-      
+
       <p *ngIf="loading">Loading...</p>
 
-      <div class="row g-3" *ngIf="!loading && pendingMessages.length > 0">
-        <div class="col-md-6 col-lg-4" *ngFor="let msg of pendingMessages">
+      <div *ngIf="!loading && pendingTestimonials.length === 0">No pending testimonials.</div>
+
+      <div class="row g-3" *ngIf="pendingTestimonials.length > 0">
+        <div class="col-md-6 col-lg-4" *ngFor="let t of pendingTestimonials">
           <div class="card h-100">
             <div class="card-body">
-              <h5>{{ msg.first_name }} {{ msg.last_name }}</h5>
-              <p><strong>Topic:</strong> {{ msg.topic }}</p>
-              <p>{{ msg.message }}</p>
+              <h5>{{ t.first_name }} {{ t.last_name }}</h5>
+              <p>{{ t.message }}</p>
 
               <img
-                *ngIf="msg.image_url"
-                [src]="'http://localhost:3000' + msg.image_url"
+                *ngIf="t.image_url"
+                [src]="'http://localhost:3000' + t.image_url"
                 class="img-fluid rounded mb-2"
               />
 
               <div class="d-flex justify-content-between mt-3">
-                <button class="btn btn-success" (click)="approve(msg.id)">Approve</button>
-                <button class="btn btn-danger" (click)="reject(msg.id)">Reject</button>
+                <button class="btn btn-success" (click)="approve(t.id)">Approve</button>
+
+                <button class="btn btn-danger" (click)="reject(t.id)">Reject</button>
               </div>
             </div>
           </div>

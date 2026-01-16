@@ -1,33 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AdminService {
 
-  private API_URL = 'http://localhost:3000/admin';
+  private API = 'http://localhost:3000/admin';
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * Get messages waiting for approval
-   */
-  getPendingMessages(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/pending`);
+  // TESTIMONIALS
+  getPendingTestimonials() {
+    return this.http.get<any[]>(
+      `${this.API}/testimonials/pending`
+    );
   }
 
-  approveMessage(id: number) {
+  approveTestimonial(id: number) {
     return this.http.put(
-      `${this.API_URL}/messages/${id}/approve`,
+      `${this.API}/testimonials/${id}/approve`,
       {}
     );
   }
 
-  rejectMessage(id: number) {
+  rejectTestimonial(id: number) {
     return this.http.put(
-      `${this.API_URL}/messages/${id}/reject`,
+      `${this.API}/testimonials/${id}/reject`,
       {}
     );
   }
