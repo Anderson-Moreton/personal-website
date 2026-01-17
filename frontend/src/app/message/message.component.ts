@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
-import { MessageService } from './message.service';
+import { MessageService } from '../services/message.service';
 @Component({
   selector: 'app-message',
   standalone: true,

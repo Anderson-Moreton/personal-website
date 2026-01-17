@@ -2,7 +2,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
-  if (req.url.endsWith('/messages') && req.method === 'POST') {
+  if (req.url.endsWith('/testimonials') && req.method === 'POST') {
     return next(req);
   }
 

@@ -1,12 +1,13 @@
 <div class="main-container d-flex align-items-start">
-  <app-sidebar [sidebarActive]="sidebarActive"></app-sidebar>
+  <app-sidebar></app-sidebar>
 
   <div class="content">
-    <app-navbar (toggleSidebarEvent)="sidebarActive = !sidebarActive"></app-navbar>
+    <app-navbar></app-navbar>
 
     <main class="container mt-3">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h3>Admin – Pending Testimonials</h3>
+        <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
       </div>
 
       <p *ngIf="loading">Loading...</p>

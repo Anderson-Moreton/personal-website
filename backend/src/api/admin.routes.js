@@ -8,6 +8,8 @@ const authAdmin = require('../middlewares/authAdmin');
  * GET /admin/testimonials/pending
  */
 router.get('/testimonials/pending', authAdmin, async (req, res) => {
+  res.set('Cache-Control', 'no-store');
+
   const [rows] = await db.execute(`
     SELECT
       id,
