@@ -62,4 +62,15 @@ export class AdminComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/admin/login']);
   }
+
+  toggleHome(t: any): void {
+  this.adminService.toggleShowOnHome(t.id, !t.show_on_home).subscribe({
+    next: () => {
+      t.show_on_home = !t.show_on_home;
+    },
+    error: (err) => {
+      alert(err.error?.error || 'Cannot show more than 8 testimonials');
+    }
+  });
+}
 }

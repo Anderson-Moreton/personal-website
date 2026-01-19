@@ -28,4 +28,11 @@ export class AdminService {
       {}
     );
   }
+
+  toggleShowOnHome(id: number, showOnHome: boolean) {
+  return this.http.put(
+    `${this.API}/testimonials/${id}/show`,
+    { showOnHome }
+  );
+}
 }

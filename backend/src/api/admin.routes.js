@@ -27,6 +27,38 @@ router.get('/testimonials/pending', authAdmin, async (req, res) => {
 });
 
 /**
+ * PUT /admin/testimonials/:id/show
+ * Toggle show_on_home
+ */
+router.put('/testimonials/:id/show', authAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { showOnHome } = req.body; // boolean
+
+  // Count how many are currently visible
+  if (showOnHome === true) {
+    const [[countRow]] = await db.execute(`
+      SELECT COUNT(*) AS total
+      FROM testimonials
+      WHERE show_on_home = 1
+        AND approved = 1
+    `);
+
+    if (countRow.total >= 8) {
+      return res.status(400).json({
+        error: 'Maximum of 8 testimonials allowed on Home'
+      });
+    }
+  }
+
+  await db.execute(
+    'UPDATE testimonials SET show_on_home = ? WHERE id = ?',
+    [showOnHome ? 1 : 0, id]
+  );
+
+  res.json({ success: true });
+});
+
+/**
  * PUT /admin/testimonials/:id/approve
  */
 router.put('/testimonials/:id/approve', authAdmin, async (req, res) => {

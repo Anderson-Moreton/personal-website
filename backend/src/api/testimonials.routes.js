@@ -58,13 +58,15 @@ router.get('/home', async (req, res) => {
       LEFT JOIN testimonial_likes l
         ON l.testimonial_id = t.id
       WHERE t.approved = 1
+        AND t.show_on_home = 1
       GROUP BY t.id
       ORDER BY t.created_at DESC
+      LIMIT 8
     `);
 
     res.json(rows);
   } catch (error) {
-    console.error('Error fetching testimonials:', error);
+    console.error('Error fetching home testimonials:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
