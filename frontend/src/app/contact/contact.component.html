@@ -44,6 +44,10 @@
               name="email"
               required
             />
+
+            <small class="text-danger" *ngIf="email && !isValidEmail(email)">
+              Invalid email address
+            </small>
           </div>
           <div class="col-md-6 offset-md-3 mb-5">
             <label>Leave your message</label>

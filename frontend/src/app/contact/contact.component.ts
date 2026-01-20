@@ -34,7 +34,8 @@ export class ContactComponent {
   constructor(private contactService: ContactService) {}
 
   submitForm(): void {
-    // Basic frontend validation
+
+    // Required fields validation
     if (
       !this.firstName.trim() ||
       !this.lastName.trim() ||
@@ -42,6 +43,12 @@ export class ContactComponent {
       !this.messageText.trim()
     ) {
       alert('Please fill in all fields.');
+      return;
+    }
+
+    // Email validation
+    if (!this.isValidEmail(this.email)) {
+      alert('Please enter a valid email address.');
       return;
     }
 
@@ -73,5 +80,10 @@ export class ContactComponent {
     this.lastName = '';
     this.email = '';
     this.messageText = '';
+  }
+
+  // Email validation helper
+  isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   }
 }

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const sharp = require('sharp');
+const path = require('path');
 const upload = require('../config/multer');
 
 /**
@@ -18,19 +20,33 @@ router.post(
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
-      const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+      let imageUrl = null;
 
-      const [result] = await db.execute(
+      if (req.file) {
+        const filename = `${Date.now()}.jpg`;
+        const outputPath = path.join(__dirname, '../uploads', filename);
+
+        await sharp(req.file.buffer)
+          .resize(300, 300, { fit: 'cover' })
+          .jpeg({ quality: 80 })
+          .toFile(outputPath);
+
+        imageUrl = `/uploads/${filename}`;
+      }
+
+      await db.execute(
         `INSERT INTO testimonials
          (first_name, last_name, message, image_url, approved)
          VALUES (?, ?, ?, ?, 0)`,
-        [firstName.trim(), lastName.trim(), message.trim(), imageUrl]
+        [
+          firstName.trim(),
+          lastName.trim(),
+          message.trim(),
+          imageUrl
+        ]
       );
 
-      res.status(201).json({
-        id: result.insertId,
-        success: true
-      });
+      res.status(201).json({ success: true });
 
     } catch (error) {
       console.error('Error creating testimonial:', error);

@@ -1,18 +1,7 @@
 const multer = require('multer');
-const path = require('path');
 
-// Storage configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.resolve(__dirname, '..', 'uploads'));
-  },
-
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
-    cb(null, fileName);
-  }
-});
+// Memory storage (Sharp will handle the file)
+const storage = multer.memoryStorage();
 
 // File filter (accept only images)
 const fileFilter = (req, file, cb) => {
