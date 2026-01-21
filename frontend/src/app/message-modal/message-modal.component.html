@@ -36,10 +36,14 @@
   <textarea
     class="form-control mb-2"
     rows="3"
-    placeholder="Your message"
+    placeholder="Write your testimonial here... (max 200 characters)"
     [(ngModel)]="messageText"
     name="messageText"
+    maxlength="200"
   ></textarea>
+  <small class="text-muted">
+    {{ messageText.length }} 200 characters
+  </small>
 
   <div class="d-flex justify-content-end gap-2">
     <button type="button" id="buttonCancel" (click)="cancel()">Cancel</button>

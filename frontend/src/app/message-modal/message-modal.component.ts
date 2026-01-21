@@ -37,33 +37,40 @@ export class MessageModalComponent {
     reader.readAsDataURL(this.imageFile);
   }
 
+  MAX_MESSAGE_LENGTH = 200;
+  MIN_MESSAGE_LENGTH = 10;
   submit(): void {
-    if (
-      !this.firstName.trim() ||
-      !this.lastName.trim() ||
-      !this.messageText.trim()
-    ) {
-      alert('Please fill all fields');
-      return;
-    }
+  const message = this.messageText.trim();
 
-    const formData = new FormData();
-    formData.append('firstName', this.firstName.trim());
-    formData.append('lastName', this.lastName.trim());
-    formData.append('message', this.messageText.trim());
-
-    if (this.imageFile) {
-      formData.append('image', this.imageFile);
-    }
-
-    this.testimonialService.sendTestimonial(formData).subscribe({
-      next: () => {
-        alert('Thank you for your testimonial!');
-        this.close.emit();
-      },
-      error: () => alert('Failed to send testimonial')
-    });
+  if (message.length < this.MIN_MESSAGE_LENGTH) {
+    alert('Message must be at least 10 characters.');
+    return;
   }
+
+  if (message.length > this.MAX_MESSAGE_LENGTH) {
+    alert('Message cannot exceed 200 characters.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('firstName', this.firstName.trim());
+  formData.append('lastName', this.lastName.trim());
+  formData.append('message', message);
+
+  if (this.imageFile) {
+    formData.append('image', this.imageFile);
+  }
+
+  this.testimonialService.sendTestimonial(formData).subscribe({
+    next: () => {
+      alert('Thank you for your testimonial!');
+      this.close.emit();
+    },
+    error: () => {
+      alert('Failed to send testimonial.');
+    }
+  });
+}
 
   cancel(): void {
     this.close.emit();

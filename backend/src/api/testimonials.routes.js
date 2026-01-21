@@ -20,6 +20,15 @@ router.post(
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
+      const trimmedMessage = message.trim();
+
+      if (trimmedMessage.length < 10) {
+        return res.status(400).json({ error: 'Message must be at least 10 characters long' });
+      }
+      if (trimmedMessage.length > 200) {
+        return res.status(400).json({ error: 'Message must not exceed 200 characters' });
+      }
+
       let imageUrl = null;
 
       if (req.file) {
@@ -41,7 +50,7 @@ router.post(
         [
           firstName.trim(),
           lastName.trim(),
-          message.trim(),
+          trimmedMessage,
           imageUrl
         ]
       );
