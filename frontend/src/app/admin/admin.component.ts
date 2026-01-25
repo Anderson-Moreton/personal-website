@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ChangeDetectorRef
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -10,108 +15,83 @@ import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [
-    CommonModule,
-    SidebarComponent,
-    NavbarComponent
-  ],
+  imports: [CommonModule, SidebarComponent, NavbarComponent],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, AfterViewInit {
 
-  sidebarActive = false;
-  loading = false;
+  loading = true;
 
-  // Data
   pendingTestimonials: any[] = [];
   approvedTestimonials: any[] = [];
 
   constructor(
     private adminService: AdminService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.loadAll();
+    this.loadTestimonials();
   }
 
-  // LOADERS 
-
-  loadAll(): void {
-    this.loadPendingTestimonials();
-    this.loadApprovedTestimonials();
+  ngAfterViewInit(): void {
+    // 🔥 resolve o bug de renderização (sidebar / navbar)
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    });
   }
 
-  loadPendingTestimonials(): void {
+  loadTestimonials(): void {
     this.loading = true;
 
     this.adminService.getPendingTestimonials().subscribe({
-      next: (data) => {
-        this.pendingTestimonials = data;
-        this.loading = false;
+      next: (pending) => {
+        this.pendingTestimonials = pending;
+
+        this.adminService.getApprovedTestimonials().subscribe({
+          next: (approved) => {
+            this.approvedTestimonials = approved;
+            this.loading = false;
+            this.cdr.detectChanges();
+          },
+          error: () => (this.loading = false)
+        });
       },
-      error: (err) => {
-        console.error('Error loading pending testimonials:', err);
-        this.loading = false;
-      }
+      error: () => (this.loading = false)
     });
   }
-
-  loadApprovedTestimonials(): void {
-    this.adminService.getApprovedTestimonials().subscribe({
-      next: (data) => {
-        this.approvedTestimonials = data;
-      },
-      error: (err) => {
-        console.error('Error loading approved testimonials:', err);
-      }
-    });
-  }
-
-  // ACTIONS
 
   approve(id: number): void {
     this.adminService.approveTestimonial(id).subscribe(() => {
-      this.pendingTestimonials =
-        this.pendingTestimonials.filter(t => t.id !== id);
-
-      this.loadApprovedTestimonials();
+      this.loadTestimonials();
     });
   }
 
   reject(id: number): void {
-    if (!confirm('Reject this testimonial?')) return;
-
     this.adminService.rejectTestimonial(id).subscribe(() => {
-      this.pendingTestimonials =
-        this.pendingTestimonials.filter(t => t.id !== id);
+      this.loadTestimonials();
     });
   }
 
   toggleShowOnHome(id: number): void {
     this.adminService.toggleShowOnHome(id).subscribe(() => {
-      const t = this.approvedTestimonials.find(x => x.id === id);
-      if (t) {
-        t.show_on_home = t.show_on_home ? 0 : 1;
-      }
+      this.loadTestimonials();
     });
   }
 
   delete(id: number): void {
-    if (!confirm('Delete this testimonial permanently?')) return;
+    if (!confirm('Are you sure you want to delete this testimonial?')) {
+      return;
+    }
 
     this.adminService.deleteTestimonial(id).subscribe(() => {
-      this.pendingTestimonials =
-        this.pendingTestimonials.filter(t => t.id !== id);
-
-      this.approvedTestimonials =
-        this.approvedTestimonials.filter(t => t.id !== id);
+      this.loadTestimonials();
     });
   }
 
-  // LOGOUT
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/admin/login']);
