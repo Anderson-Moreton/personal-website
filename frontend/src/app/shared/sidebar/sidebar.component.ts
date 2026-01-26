@@ -1,12 +1,11 @@
 // sidebar.component.ts
 import { Component, Input, ElementRef, ViewChild, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from "@angular/router";
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
@@ -39,5 +38,11 @@ export class SidebarComponent {
       setTimeout(() => this.typeWriter(), this.typingSpeed);
     }
   }
-}
 
+  scrollTo(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+}

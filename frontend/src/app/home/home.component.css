@@ -1,6 +1,10 @@
+.main-home{
+  background-color: aquamarine;
+  margin-top: -10px;
+}
 
-/*Content home*/
-#session-welcome{
+/* ===== WELCOME ===== */
+#session-welcome {
   margin: 10px;
 }
 
@@ -16,6 +20,12 @@
   font-size: 16px;
 }
 
+.about-text {
+  text-align: justify;
+  font-size: 14px;
+}
+
+/* ===== BANNER ===== */
 .banner {
   display: flex;
   justify-content: center;
@@ -24,40 +34,28 @@
 
 .banner img {
   border-radius: 10px;
-  padding: 2px; 
-  object-fit: contain;
+  padding: 2px;
   max-width: 100%;
   height: auto;
   box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.25);
-} 
+}
 
-.about-text {
-  text-align: justify;
-  font-size: 14px;
-} 
-
-/*Session Deposition*/
+/* ===== TESTIMONIALS HEADER ===== */
 .title-depositions {
   background-color: #060d15;
   height: 36px;
-  width: auto;
 }
 
 .title-depositions h4 {
   font-size: 24px;
   color: #fff;
-} 
+}
 
-.add-deposition-icon{
-  background-color: transparent;
+/* ADD BUTTON */
+.add-deposition-icon {
+  background: transparent;
   border: none;
-  padding: 0;
-  margin: 0;
-  outline: none;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .add-deposition-icon i {
@@ -70,7 +68,7 @@
   color: #3effbe;
 }
 
-/* Testimonial card */
+/* ===== CARD ===== */
 .deposition {
   border: 1px solid #b1adae;
   border-radius: 10px;
@@ -78,115 +76,100 @@
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   background-color: #fff;
-  height: 100%; /* ensures the card fills the column height */
-  transition: transform 0.3s, box-shadow 0.3s;
-} 
+}
 
-/* Hover effect */
 .deposition:hover {
   transform: translateY(-5px);
-  box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.3);
-} 
+  transition: 0.3s;
+}
 
-/* Testimonial title */
 .title-deposition {
   font-size: 16px;
   font-weight: bold;
-  color: #060d15;
-} 
-
-/* Hobby text */
-.item-deposition span {
-  font-size: 12px;
-  color: #555;
 }
 
-/* Avatar image */
 .image-deposition img {
   height: 60px;
   width: 60px;
   border-radius: 50%;
-} 
-
-/* Testimonial text */
-.depoiment {
-  font-size: 14px;
-  font-weight: normal;
-  color: #222;
-  text-align: justify;
-  margin-bottom: 0;
-} 
-
-/* Like container */
-.like-container {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  justify-content: flex-end;
-} 
-
-/* Like number */
-.like-count {
-  font-size: 13px;
-  font-weight: bold;
-  color: #555;
-} 
-
-/* Heart icon */
-.like-icon {
-  font-size: 20px;
-  color: #999;
-  cursor: pointer;
-  transition: color 0.3s ease;
 }
 
-.like-icon:hover {
-  transform: scale(1.2);
-} 
+.depoiment {
+  font-size: 14px;
+  text-align: justify;
+}
 
-/* Liked state */
+/* ===== LIKES ===== */
+.like-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+}
+
+.like-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
 .like-icon.liked {
   color: #e63946;
-} 
+}
 
-/* MODAL BACKDROP */
+/* ===== MODAL ===== */
 .custom-modal-backdrop {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 2000;
-  padding: 1rem;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.3s ease;
 }
 
-.custom-modal-backdrop.with-sidebar {
-  margin-left: var(--sidebar-width);
-  width: calc(100vw - var(--sidebar-width));
+.custom-modal-backdrop.active {
+  opacity: 1;
+  pointer-events: all;
 }
 
-/* MODAL CONTAINER */
 .custom-modal {
-  background: #ffffff;
+  background: #fff;
   width: 100%;
   max-width: 600px;
   max-height: 90vh;
   border-radius: 12px;
   padding: 1.5rem;
-  overflow-y: auto;
-  position: relative;
-  animation: modalFadeIn 0.25s ease;
+  transform: scale(0.9);
+  opacity: 0;
+  transition: transform 0.3s ease;
+}
+
+.custom-modal.active {
+  transform: scale(1);
+  opacity: 1;
 }
 
 .close-btn {
   position: absolute;
   top: 10px;
   right: 12px;
+  background: none;
   border: none;
-  background: transparent;
   font-size: 22px;
   cursor: pointer;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); }
+  to { transform: scale(1); }
 }

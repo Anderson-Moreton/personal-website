@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SidebarComponent } from '../shared/sidebar/sidebar.component';
-import { NavbarComponent } from '../shared/navbar/navbar.component';
 
 interface Skill {
   name: string;
@@ -13,7 +11,7 @@ interface Skill {
 @Component({
   selector: 'app-about-me',
   standalone: true,
-  imports: [CommonModule, SidebarComponent, NavbarComponent],
+  imports: [CommonModule],
   templateUrl: './about-me.component.html',
   styleUrl: './about-me.component.css',
 })

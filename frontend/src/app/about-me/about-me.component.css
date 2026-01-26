@@ -1,3 +1,7 @@
+.aboutMeBackground{
+    background-color: pink;
+}
+
 .imgAbout{
     display: flex;
     justify-content: center;

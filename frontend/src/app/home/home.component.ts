@@ -1,15 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { HomeService } from '../services/home.service';
 import { MessageModalComponent } from '../message-modal/message-modal.component';
+import { AboutMeComponent } from '../about-me/about-me.component';
+import { ContactComponent } from '../contact/contact.component';
+import { MyRepositoryComponent } from '../my-repository/my-repository.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, SidebarComponent, NavbarComponent, MessageModalComponent],
+  imports: [
+    CommonModule,
+    SidebarComponent,
+    NavbarComponent,
+    MessageModalComponent,
+    AboutMeComponent,
+    ContactComponent,
+    MyRepositoryComponent
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -25,25 +36,18 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Initial load from resolver
     this.depositions = this.route.snapshot.data['depositions'];
 
-    // Listen to resolver updates (important for navigation)
     this.route.data.subscribe(data => {
       this.depositions = data['depositions'];
       this.restoreLikesFromLocalStorage();
     });
   }
 
-  /**
-   * Toggle like / unlike
-   * Backend = source of truth for count
-   * localStorage = prevent multiple likes
-   */
+  /* ===== LIKES ===== */
   toggleLike(depo: any): void {
     depo.likes = Number(depo.likes ?? 0);
 
-    // LIKE
     if (!depo.liked) {
       depo.liked = true;
       depo.likes += 1;
@@ -51,24 +55,20 @@ export class HomeComponent implements OnInit {
 
       this.homeService.likeMessage(depo.id).subscribe({
         error: () => {
-          // Rollback if backend fails
           depo.liked = false;
           depo.likes -= 1;
           this.removeLike(depo.id);
         }
       });
-
       return;
     }
 
-    // UNLIKE
     depo.liked = false;
     depo.likes = Math.max(depo.likes - 1, 0);
     this.removeLike(depo.id);
 
     this.homeService.unlikeMessage(depo.id).subscribe({
       error: () => {
-        // Rollback if backend fails
         depo.liked = true;
         depo.likes += 1;
         this.saveLike(depo.id);
@@ -76,32 +76,35 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // Restore only the liked state (NOT the counter)
   private restoreLikesFromLocalStorage(): void {
     this.depositions.forEach(depo => {
-      const liked = localStorage.getItem(`liked_message_${depo.id}`);
-      depo.liked = liked === 'true';
+      depo.liked = localStorage.getItem(`liked_message_${depo.id}`) === 'true';
     });
   }
 
-  // Save like locally
-  private saveLike(messageId: number): void {
-    localStorage.setItem(`liked_message_${messageId}`, 'true');
+  private saveLike(id: number): void {
+    localStorage.setItem(`liked_message_${id}`, 'true');
   }
 
-  // Remove like locally
-  private removeLike(messageId: number): void {
-    localStorage.removeItem(`liked_message_${messageId}`);
+  private removeLike(id: number): void {
+    localStorage.removeItem(`liked_message_${id}`);
   }
 
-  // Open modal
+  /* ===== MODAL ===== */
   openModal(): void {
     this.isModalOpen = true;
+    document.body.style.overflow = 'hidden';
   }
 
-  // Close modal
   closeModal(): void {
     this.isModalOpen = false;
+    document.body.style.overflow = '';
   }
 
+  @HostListener('document:keydown.escape')
+  onEsc(): void {
+    if (this.isModalOpen) {
+      this.closeModal();
+    }
+  }
 }

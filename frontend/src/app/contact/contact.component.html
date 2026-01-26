@@ -1,72 +1,64 @@
-<div class="main-container d-flex align-items-start">
-  <!-- Sidebar -->
-  <app-sidebar [sidebarActive]="sidebarActive"></app-sidebar>
-
-  <div class="content">
-    <!-- Navbar -->
-    <app-navbar (toggleSidebarEvent)="sidebarActive = !sidebarActive"></app-navbar>
-
-    <main>
-      <div class="container">
-        <form (ngSubmit)="submitForm()">
-          <div class="form-upload">
-            <h4>Leave your message</h4>
-          </div>
-          <div class="d-flex justify-content-center">
-            <div class="col-4 col-md-2 mb-3">
-              <label>First Name</label>
-              <input
-                type="text"
-                class="form-control colorInput heightInput"
-                [(ngModel)]="firstName"
-                name="firstName"
-                required
-              />
-            </div>
-            <div class="col-8 col-md-4 mb-3 ms-2">
-              <label>Last Name</label>
-              <input
-                type="text"
-                class="form-control colorInput heightInput"
-                [(ngModel)]="lastName"
-                name="lastName"
-                required
-              />
-            </div>
-          </div>
-          <div class="col-md-6 offset-md-3 mb-3">
-            <label>Email Address</label>
+<main id="contactPage">
+  <section>
+    <div class="container">
+      <form (ngSubmit)="submitForm()">
+        <div class="form-upload">
+          <h4>Leave your message</h4>
+        </div>
+        <div class="d-flex justify-content-center">
+          <div class="col-4 col-md-2 mb-3">
+            <label>First Name</label>
             <input
-              type="email"
+              type="text"
               class="form-control colorInput heightInput"
-              placeholder="name@example.com"
-              [(ngModel)]="email"
-              name="email"
+              [(ngModel)]="firstName"
+              name="firstName"
               required
             />
-
-            <small class="text-danger" *ngIf="email && !isValidEmail(email)">
-              Invalid email address
-            </small>
           </div>
-          <div class="col-md-6 offset-md-3 mb-5">
-            <label>Leave your message</label>
-            <textarea
-              class="form-control colorInput"
-              rows="3"
-              placeholder="Write your message here..."
-              [(ngModel)]="messageText"
-              name="messageText"
+          <div class="col-8 col-md-4 mb-3 ms-2">
+            <label>Last Name</label>
+            <input
+              type="text"
+              class="form-control colorInput heightInput"
+              [(ngModel)]="lastName"
+              name="lastName"
               required
-            ></textarea>
+            />
           </div>
-          <div class="d-flex justify-content-center m-3">
-            <button type="submit" id="buttonSubmit" class="custom-btn mb-3">
-              <i class="bi bi-upload me-2"></i> Submit
-            </button>
-          </div>
-        </form>
-      </div>
-    </main>
-  </div>
-</div>
+        </div>
+        <div class="col-md-6 offset-md-3 mb-3">
+          <label>Email Address</label>
+          <input
+            type="email"
+            class="form-control colorInput heightInput"
+            placeholder="name@example.com"
+            [(ngModel)]="email"
+            name="email"
+            required
+          />
+
+          <small class="text-danger" *ngIf="email && !isValidEmail(email)">
+            Invalid email address
+          </small>
+        </div>
+        <div class="col-md-6 offset-md-3 mb-5">
+          <label>Leave your message</label>
+          <textarea
+            class="form-control colorInput"
+            rows="3"
+            placeholder="Write your message here..."
+            [(ngModel)]="messageText"
+            name="messageText"
+            required
+          ></textarea>
+        </div>
+        <div class="d-flex justify-content-center m-3">
+          <button type="submit" id="buttonSubmit" class="custom-btn mb-3">
+            <i class="bi bi-upload me-2"></i> Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>

@@ -1,14 +1,14 @@
 <div class="main-container d-flex align-items-start">
-  <!-- Sidebar Component -->
+  <!-- Sidebar -->
   <app-sidebar [sidebarActive]="sidebarActive"></app-sidebar>
 
   <div class="content">
-    <!-- Navbar Component -->
+    <!-- Navbar -->
     <app-navbar (toggleSidebarEvent)="sidebarActive = !sidebarActive"></app-navbar>
 
-    <main>
-      <div class="container">
-        <!-- Session Welcome -->
+    <main class="main-home">
+      <div id="home" class="container">
+        <!-- WELCOME -->
         <section id="session-welcome">
           <div class="row">
             <div class="session-welcome-content col-12 col-lg-6">
@@ -32,63 +32,81 @@
                 </p>
               </div>
             </div>
-
             <div class="banner col-12 col-lg-6">
-              <img src="assets/img/indexPhotoAndersonMoreton.png" class="img-thumbnail" alt="" />
+              <img
+                src="assets/img/indexPhotoAndersonMoreton.png"
+                class="img-thumbnail"
+                alt="Anderson"
+              />
             </div>
           </div>
         </section>
-        <!-- Depositions Section -->
-        <section id="depositions" class="container mt-1 mb-1">
-          <div class="title-depositions col-12 d-flex justify-content-between">
-            <h4 class="section-title my-auto mx-auto">Testimonials</h4>
-            <button type="button" class="add-deposition-icon my-auto me-4" (click)="openModal()">
+
+        <!-- TESTIMONIALS -->
+        <section id="depositions" class="container mt-3 mb-3">
+          <div class="title-depositions d-flex justify-content-between align-items-center">
+            <h4 class="section-title mx-auto">Testimonials</h4>
+
+            <button
+              type="button"
+              class="add-deposition-icon me-4"
+              (click)="openModal()"
+            >
               <i class="bi bi-plus-circle"> Add</i>
             </button>
           </div>
-          <div class="card-deposition mt-3">
-            <div class="container">
-              <div class="row g-3 align-items-stretch">
-                <div
-                  class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 d-flex"
-                  *ngFor="let depo of depositions"
-                >
-                  <div class="deposition card flex-fill h-100">
-                    <!-- Header -->
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                      <div class="item-deposition text-center">
-                        <h6 class="title-deposition">{{ depo.first_name }} {{ depo.last_name }}</h6>
-                      </div>
-                      <!-- Image (optional) -->
-                      <div class="image-deposition" *ngIf="depo.image_url">
-                        <img
-                          [src]="'http://localhost:3000' + depo.image_url"
-                          [alt]="'Photo of ' + depo.first_name"
-                        />
-                      </div>
-                    </div>
-                    <!-- Message -->
-                    <p class="depoiment">
-                      {{ depo.message }}
-                    </p>
-                    <!-- Like counter and heart -->
-                    <div class="like-container mt-auto">
-                      <i
-                        class="like-icon"
-                        [ngClass]="depo.liked ? 'bi-heart-fill liked' : 'bi-heart'"
-                        (click)="toggleLike(depo)"
-                      ></i>
-                      <span class="like-count">{{ depo.likes }}</span>
-                    </div>
+
+          <div class="row g-3 mt-3">
+            <div
+              class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 d-flex"
+              *ngFor="let depo of depositions"
+            >
+              <div class="deposition card flex-fill h-100">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 class="title-deposition">{{ depo.first_name }} {{ depo.last_name }}</h6>
+
+                  <div *ngIf="depo.image_url" class="image-deposition">
+                    <img [src]="'http://localhost:3000' + depo.image_url" alt="testimonial image" />
                   </div>
+                </div>
+
+                <p class="depoiment">{{ depo.message }}</p>
+
+                <div class="like-container mt-auto">
+                  <i
+                    class="like-icon"
+                    [ngClass]="depo.liked ? 'bi-heart-fill liked' : 'bi-heart'"
+                    (click)="toggleLike(depo)"
+                  ></i>
+                  <span class="like-count">{{ depo.likes }}</span>
                 </div>
               </div>
             </div>
           </div>
         </section>
-        <!-- Message Modal -->
-        <div class="custom-modal-backdrop" [class.with-sidebar]="sidebarActive" *ngIf="isModalOpen">
-          <div class="custom-modal">
+
+        <!-- ABOUT -->
+        <section id="about-me" class="container py-5">
+          <app-about-me></app-about-me>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="container py-5">
+          <app-contact></app-contact>
+        </section>
+
+        <!-- REPOSITORY -->
+        <section id="my-repository" class="container py-5">
+          <app-my-repository></app-my-repository>
+        </section>
+
+        <!-- MODAL -->
+        <div
+          class="custom-modal-backdrop"
+          [class.active]="isModalOpen"
+          (click)="closeModal()"
+        >
+          <div class="custom-modal" [class.active]="isModalOpen" (click)="$event.stopPropagation()">
             <button class="close-btn" (click)="closeModal()">×</button>
             <app-message-modal (close)="closeModal()"></app-message-modal>
           </div>

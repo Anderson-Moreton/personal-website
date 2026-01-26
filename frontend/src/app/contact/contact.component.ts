@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SidebarComponent } from '../shared/sidebar/sidebar.component';
-import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { ContactService } from '../services/contact.service';
 
 @Component({
@@ -11,8 +9,6 @@ import { ContactService } from '../services/contact.service';
   imports: [
     CommonModule,
     FormsModule,
-    SidebarComponent,
-    NavbarComponent
   ],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css']

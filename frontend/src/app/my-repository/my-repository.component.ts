@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { SidebarComponent } from '../shared/sidebar/sidebar.component';
-import { NavbarComponent } from '../shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-my-repository',
   standalone: true,
-  imports: [CommonModule, RouterModule, SidebarComponent, NavbarComponent],
+  imports: [CommonModule, RouterModule],
   templateUrl: './my-repository.component.html',
   styleUrls: ['./my-repository.component.css']
 })
