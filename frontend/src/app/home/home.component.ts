@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
@@ -24,7 +24,7 @@ import { MyRepositoryComponent } from '../my-repository/my-repository.component'
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
 
   sidebarActive = false;
   depositions: any[] = [];
@@ -42,6 +42,28 @@ export class HomeComponent implements OnInit {
       this.depositions = data['depositions'];
       this.restoreLikesFromLocalStorage();
     });
+  }
+
+  /* ===== SCROLL ANIMATION ===== */
+  ngAfterViewInit(): void {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        } else {
+          entry.target.classList.remove('active');
+        }
+      });
+      },
+      {
+        threshold: 0.2
+      }
+    );
+
+    document
+      .querySelectorAll('.reveal')
+      .forEach(el => observer.observe(el));
   }
 
   /* ===== LIKES ===== */

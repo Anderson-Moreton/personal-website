@@ -1,148 +1,186 @@
 <main class="aboutMeBackground">
-  <div class="container">
-    <section> 
-      <div class="row justify-content-md-center mt-3">
-        <div class="col-sm-12 col-md-12 col-lg-9 order-1 order-lg-2">
-          <h3 class="titleAboutMe">About me</h3>
-          <div class="about-text">
-            <p class="pOne">
-              My name is Anderson Moreton and I'm from São Paulo. I graduated in Systems Analysis
-              from FMU - Centro Universitário das Faculdades Metropolitanas Unidas de São Paulo.
-              Since I was a child, I have always loved technology, video games, and Rock and Roll. I
-              had my first contact with programming later, but it was enough for me to fully enter
-              this world. I started university in 2021 and since then I have been studying and
-              learning more about the world of technology.
-            </p>
-            <p class="pTwo">
-              Because I had to balance studies and work, I always had to prioritize my job, as I
-              needed to support my home and family. I always did this without stopping my studies,
-              because changing my career would require a lot of study and dedication. We know it is
-              not easy, and change always brings some fear and discomfort.
-            </p>
-            <p class="pThree">
-              But I was patient and worked hard, because I knew an opportunity would come. The first
-              opportunity came in 2024, to work with databases in a casino in Portugal, where I live
-              and work now.
-            </p>
-          </div>
-        </div>
+  <!-- ================= ABOUT ME SECTION ================= -->
+  <section>
+    <div class="row justify-content-md-center mt-3">
+      <!-- Text content -->
+      <div class="col-sm-12 col-md-12 col-lg-8 order-1 order-lg-2">
+        <h3 class="titleAboutMe">About me</h3>
 
-        <div class="imgAbout text-center col-sm-12 col-md-12 col-lg-3 order-2 order-lg-1">
-          <img class="img-fluid" src="assets/img/aboutMe.png" alt="Anderson Moreton" />
-        </div>
-      </div>
-    </section>
-
-    <section id="session-logos">
-      <div class="title-habilities col-12 d-flex justify-content-center align-items-center mb-4">
-        <h6>My Skills</h6>
-      </div>
-
-      <div class="row flex-column flex-lg-row">
-        <div class="sideBySide col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-          <div class="row justify-content-evenly p-3 logos-row">
-            <div
-              class="logo logo1 col-2"
-              (mouseenter)="onHover('logo1')"
-              (mouseleave)="onLeave()"
-              (click)="onClick('logo1', $event)"
-            >
-              <img src="assets/img/html5.png" class="img-fluid" />
-            </div>
-
-            <div
-              class="logo logo2 col-2"
-              (mouseenter)="onHover('logo2')"
-              (mouseleave)="onLeave()"
-              (click)="onClick('logo2', $event)"
-            >
-              <img src="assets/img/css.png" class="img-fluid" />
-            </div>
-
-            <div
-              class="logo logo3 col-2"
-              (mouseenter)="onHover('logo3')"
-              (mouseleave)="onLeave()"
-              (click)="onClick('logo3', $event)"
-            >
-              <img src="assets/img/javascript.png" class="img-fluid" />
-            </div>
-
-            <div
-              class="logo logo4 col-2"
-              (mouseenter)="onHover('logo4')"
-              (mouseleave)="onLeave()"
-              (click)="onClick('logo4', $event)"
-            >
-              <img src="assets/img/bootstrap.png" class="img-fluid" />
-            </div>
-          </div>
-
-          <div class="row mt-3 justify-content-evenly p-3 logos-row" id="marginBotttom">
-            <div
-              class="logo logo5 col-2"
-              (mouseenter)="onHover('logo5')"
-              (mouseleave)="onLeave()"
-              (click)="onClick('logo5', $event)"
-            >
-              <img src="assets/img/node-js.png" class="img-fluid" />
-            </div>
-
-            <div
-              class="logo logo6 col-2"
-              (mouseenter)="onHover('logo6')"
-              (mouseleave)="onLeave()"
-              (click)="onClick('logo6', $event)"
-            >
-              <img src="assets/img/mysql.png" class="img-fluid" />
-            </div>
-
-            <div
-              class="logo logo7 col-2"
-              (mouseenter)="onHover('logo7')"
-              (mouseleave)="onLeave()"
-              (click)="onClick('logo7', $event)"
-            >
-              <img src="assets/img/angular.png" class="img-fluid" />
-            </div>
-
-            <div
-              class="logo logo8 col-2"
-              (mouseenter)="onHover('logo8')"
-              (mouseleave)="onLeave()"
-              (click)="onClick('logo8', $event)"
-            >
-              <img src="assets/img/docker.png" class="img-fluid" />
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="modal-container col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex justify-content-center align-items-center"
-        >
-          <p *ngIf="!selectedSkill" class="default-text text-center p-5">
-            Hover over the images<br /><br />to see the description
+        <div class="about-text">
+          <p class="pOne">
+            My name is Anderson Moreton and I'm from São Paulo. I graduated in
+            Systems Analysis from FMU - Centro Universitário das Faculdades
+            Metropolitanas Unidas de São Paulo. Since I was a child, I have
+            always loved technology, video games, and Rock and Roll. I had my
+            first contact with programming later, but it was enough for me to
+            fully enter this world. I started university in 2021 and since then
+            I have been studying and learning more about the world of
+            technology.
           </p>
 
-          <div *ngIf="selectedSkill" class="modal-content show">
-            <div class="name">{{ selectedSkill.name }}</div>
-            <div class="level">Level: {{ selectedSkill.level }}</div>
-            <div class="description">
-              {{ selectedSkill.description }}
-            </div>
+          <p class="pTwo">
+            Because I had to balance studies and work, I always had to
+            prioritize my job, as I needed to support my home and family. I
+            always did this without stopping my studies, because changing my
+            career would require a lot of study and dedication. We know it is
+            not easy, and change always brings some fear and discomfort.
+          </p>
 
-            <div class="star-container">
-              <span
-                *ngFor="let star of [1, 2, 3, 4, 5]"
-                class="star"
-                [ngClass]="{ filled: star <= selectedSkill.stars }"
-              >
-                ★
-              </span>
-            </div>
+          <p class="pThree">
+            But I was patient and worked hard, because I knew an opportunity
+            would come. The first opportunity came in 2024, to work with
+            databases in a casino in Portugal, where I live and work now.
+          </p>
+        </div>
+      </div>
+
+      <!-- Profile image -->
+      <div
+        class="imgAbout text-center col-sm-12 col-md-12 col-lg-4 order-2 order-lg-1 p-4"
+      >
+        <img
+          class="img-fluid"
+          src="assets/img/aboutMe.png"
+          alt="Anderson Moreton"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SKILLS SECTION ================= -->
+  <section id="session-logos">
+    <!-- Section title -->
+    <div
+      class="title-habilities col-12 d-flex justify-content-center align-items-center mb-4"
+    >
+      <h6>My Skills</h6>
+    </div>
+
+    <div class="row flex-column flex-lg-row">
+      <!-- ================= LOGOS COLUMN ================= -->
+      <div
+        class="sideBySide col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6"
+      >
+        <!-- First row of logos -->
+        <div class="row justify-content-evenly p-3 logos-row">
+          <div
+            class="logo logo1 col-2"
+            [class.active]="activeLogo === 'logo1'"
+            (mouseenter)="onHover('logo1')"
+            (mouseleave)="onLeave()"
+            (click)="onClick('logo1', $event)"
+          >
+            <img src="assets/img/html5.png" class="img-fluid" />
+          </div>
+
+          <div
+            class="logo logo2 col-2"
+            [class.active]="activeLogo === 'logo2'"
+            (mouseenter)="onHover('logo2')"
+            (mouseleave)="onLeave()"
+            (click)="onClick('logo2', $event)"
+          >
+            <img src="assets/img/css.png" class="img-fluid" />
+          </div>
+
+          <div
+            class="logo logo3 col-2"
+            [class.active]="activeLogo === 'logo3'"
+            (mouseenter)="onHover('logo3')"
+            (mouseleave)="onLeave()"
+            (click)="onClick('logo3', $event)"
+          >
+            <img src="assets/img/javascript.png" class="img-fluid" />
+          </div>
+
+          <div
+            class="logo logo4 col-2"
+            [class.active]="activeLogo === 'logo4'"
+            (mouseenter)="onHover('logo4')"
+            (mouseleave)="onLeave()"
+            (click)="onClick('logo4', $event)"
+          >
+            <img src="assets/img/bootstrap.png" class="img-fluid" />
+          </div>
+        </div>
+
+        <!-- Second row of logos -->
+        <div
+          class="row mt-3 justify-content-evenly p-3 logos-row"
+          id="marginBotttom"
+        >
+          <div
+            class="logo logo5 col-2"
+            [class.active]="activeLogo === 'logo5'"
+            (mouseenter)="onHover('logo5')"
+            (mouseleave)="onLeave()"
+            (click)="onClick('logo5', $event)"
+          >
+            <img src="assets/img/node-js.png" class="img-fluid" />
+          </div>
+
+          <div
+            class="logo logo6 col-2"
+            [class.active]="activeLogo === 'logo6'"
+            (mouseenter)="onHover('logo6')"
+            (mouseleave)="onLeave()"
+            (click)="onClick('logo6', $event)"
+          >
+            <img src="assets/img/mysql.png" class="img-fluid" />
+          </div>
+
+          <div
+            class="logo logo7 col-2"
+            [class.active]="activeLogo === 'logo7'"
+            (mouseenter)="onHover('logo7')"
+            (mouseleave)="onLeave()"
+            (click)="onClick('logo7', $event)"
+          >
+            <img src="assets/img/angular.png" class="img-fluid" />
+          </div>
+
+          <div
+            class="logo logo8 col-2"
+            [class.active]="activeLogo === 'logo8'"
+            (mouseenter)="onHover('logo8')"
+            (mouseleave)="onLeave()"
+            (click)="onClick('logo8', $event)"
+          >
+            <img src="assets/img/docker.png" class="img-fluid" />
           </div>
         </div>
       </div>
-    </section>
-  </div>
+
+      <!-- ================= MODAL COLUMN ================= -->
+      <div
+        class="modal-container col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6"
+      >
+        <!-- Default text shown when no skill is selected -->
+        <p *ngIf="!selectedSkill" class="default-text text-center p-5">
+          Hover over the images<br /><br />
+          to see the description
+        </p>
+
+        <!-- Skill modal -->
+        <div class="modal-content" [class.show]="selectedSkill">
+          <div class="name">{{ selectedSkill?.name }}</div>
+          <div class="level">Level: {{ selectedSkill?.level }}</div>
+          <div class="description">
+            {{ selectedSkill?.description }}
+          </div>
+
+          <!-- Star rating -->
+          <div class="star-container">
+            <span
+              *ngFor="let star of [1, 2, 3, 4, 5]"
+              class="star"
+              [ngClass]="{ filled: star <= (selectedSkill?.stars || 0) }"
+            >
+              ★
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
