@@ -112,3 +112,39 @@ a.navbar-brand.fs-4 {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Custom Toast */
+.custom-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  min-width: 260px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  box-shadow: 1px 3px 12px #1c1c1c;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 9999;
+}
+
+.custom-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.custom-toast.success {
+  background-color: #060d15;
+  border-left: 4px solid #3effbe;
+}
+
+.custom-toast.error {
+  background-color: #e67676;
+}
+
+.custom-toast.warning {
+  background-color: #0a1625;
+  border-left: 4px solid #f5c542;
+}

@@ -1,6 +1,6 @@
 <main class="contactPage">
   <section>
-      <form (ngSubmit)="submitForm()">
+      <form #contactForm="ngForm" (ngSubmit)="submitForm(contactForm)">
         <div class="form-upload">
           <h4>Leave your message</h4>
         </div>

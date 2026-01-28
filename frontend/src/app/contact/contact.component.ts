@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ContactService } from '../services/contact.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-contact',
@@ -27,49 +28,39 @@ export class ContactComponent {
   // UI state
   loading = false;
 
-  constructor(private contactService: ContactService) {}
+  constructor(
+    private contactService: ContactService,
+    private notificationService: NotificationService
+  ) {}
 
-  submitForm(): void {
+  submitForm(form: NgForm): void {
 
-    // Required fields validation
-    if (
-      !this.firstName.trim() ||
-      !this.lastName.trim() ||
-      !this.email.trim() ||
-      !this.messageText.trim()
-    ) {
-      alert('Please fill in all fields.');
-      return;
-    }
-
-    // Email validation
-    if (!this.isValidEmail(this.email)) {
-      alert('Please enter a valid email address.');
-      return;
-    }
-
-    this.loading = true;
-
-    const payload = {
-      firstName: this.firstName.trim(),
-      lastName: this.lastName.trim(),
-      email: this.email.trim(),
-      message: this.messageText.trim()
-    };
-
-    this.contactService.sendMessage(payload).subscribe({
-      next: () => {
-        alert('Your message was sent successfully!');
-        this.resetForm();
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error sending contact message:', error);
-        alert('Failed to send message. Please try again later.');
-        this.loading = false;
-      }
-    });
+  if (form.invalid) {
+    this.notificationService.warning('Please fill in all fields.');
+    return;
   }
+
+  this.loading = true;
+
+  const payload = {
+    firstName: this.firstName.trim(),
+    lastName: this.lastName.trim(),
+    email: this.email.trim(),
+    message: this.messageText.trim()
+  };
+
+  this.contactService.sendMessage(payload).subscribe({
+    next: () => {
+      this.loading = false;
+      this.notificationService.success('Your message was sent successfully!');
+      form.resetForm(); // 👈 limpa tudo corretamente
+    },
+    error: () => {
+      this.loading = false;
+      this.notificationService.error('Failed to send message.');
+    }
+  });
+}
 
   private resetForm(): void {
     this.firstName = '';

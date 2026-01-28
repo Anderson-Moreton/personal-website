@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output, ViewChild, ElementRef } from '@angular
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TestimonialService } from '../services/testimonials.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-message-modal',
@@ -22,7 +23,10 @@ export class MessageModalComponent {
   @ViewChild('imagePreview') imagePreview!: ElementRef<HTMLImageElement>;
   @ViewChild('cardIcon') cardIcon!: ElementRef<HTMLElement>;
 
-  constructor(private testimonialService: TestimonialService) {}
+  constructor(
+    private testimonialService: TestimonialService,
+    private notificationService: NotificationService
+  ) {}
 
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -43,12 +47,12 @@ export class MessageModalComponent {
   const message = this.messageText.trim();
 
   if (message.length < this.MIN_MESSAGE_LENGTH) {
-    alert('Message must be at least 10 characters.');
+    this.notificationService.warning('Message must be at least 10 characters.');
     return;
   }
 
   if (message.length > this.MAX_MESSAGE_LENGTH) {
-    alert('Message cannot exceed 200 characters.');
+    this.notificationService.warning('Message cannot exceed 200 characters.');
     return;
   }
 
@@ -63,11 +67,11 @@ export class MessageModalComponent {
 
   this.testimonialService.sendTestimonial(formData).subscribe({
     next: () => {
-      alert('Thank you for your testimonial!');
+      this.notificationService.success('Thank you for your testimonial!');
       this.close.emit();
     },
     error: () => {
-      alert('Failed to send testimonial.');
+      this.notificationService.error('Failed to send testimonial.');
     }
   });
 }

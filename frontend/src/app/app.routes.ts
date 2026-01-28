@@ -5,6 +5,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { adminTestimonialsResolver } from './admin/admin.resolver';
+import { ComingSoonComponent } from './pages/coming-soon/coming-soon.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -15,6 +16,12 @@ export const routes: Routes = [
     resolve: {
       depositions: homeResolver
     }
+  },
+
+  // COMING SOON
+  {
+    path: 'coming-soon',
+    component: ComingSoonComponent
   },
 
   // ADMIN

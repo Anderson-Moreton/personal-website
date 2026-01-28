@@ -1,9 +1,9 @@
 <main class="my-repository">
   <section>
-      <div class="form-repository">
+      <div class="form-repository mb-5">
         <h4>My Repository</h4>
       </div>
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 ms-1 me-1">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 ms-1 me-1 mt-2">
         <div class="col" *ngFor="let project of projects">
           <div class="card card-item h-100">
             <img [src]="project.image" [alt]="project.title" />
@@ -16,7 +16,7 @@
             </div>
 
             <div class="card-button mt-auto">
-              <a routerLink="/coming-soon" target="_blank" class="btn btn-primary w-100">
+              <a routerLink="/coming-soon" target="_self" class="btn btn-primary w-100">
                 View more
               </a>
             </div>

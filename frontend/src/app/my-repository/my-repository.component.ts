@@ -15,23 +15,23 @@ export class MyRepositoryComponent {
 
   projects = [
     {
-      title: 'Personal Website',
+      title: 'Project under development',
       description:
-        'Website developed to showcase my projects using HTML, CSS, Bootstrap, JavaScript and Angular.',
+        'The project is still in progress. More details will be available soon.',
       image: 'assets/img/profileRepository.png',
       link: 'https://github.com/Anderson-Moreton'
     },
     {
-      title: 'Dashboard Power BI',
+      title: 'Project under development ',
       description:
-        'Interactive dashboard for data analysis and decision support.',
+        'The project is still in progress. More details will be available soon.',
       image: 'assets/img/profileRepository.png',
       link: 'https://github.com/Anderson-Moreton'
     },
     {
-      title: 'Web System',
+      title: 'Project under development ',
       description:
-        'Responsive web system focused on usability and best development practices.',
+        'The project is still in progress. More details will be available soon.',
       image: 'assets/img/profileRepository.png',
       link: 'https://github.com/Anderson-Moreton'
     }
