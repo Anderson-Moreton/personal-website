@@ -2,7 +2,9 @@
 * {
   font-family: Candara;
   font-weight: 400;
-} /* SIDEBAR */
+} 
+
+/* SIDEBAR */
 #side_nav {
   background: #060d15;
   min-width: 250px;
@@ -11,13 +13,21 @@
   position: fixed;
   top: 0;
   left: 0;
-  overflow-y: auto;
+  overflow-y: hidden;
   z-index: 1050;
   transition: margin-left 0.3s ease;
-} /* Desktop + Tablet */
+} 
+
+#side_nav a {
+  cursor: pointer;
+}
+
+/* Desktop + Tablet */
 #side_nav {
   margin-left: 0;
-} /* Mobile ONLY */
+} 
+
+/* Mobile ONLY */
 @media (max-width: 767px) {
   #side_nav {
     margin-left: -250px;
@@ -25,7 +35,9 @@
   #side_nav.active {
     margin-left: 0;
   }
-} /* Sidebar content */
+} 
+
+/* Sidebar content */
 .logo-profile {
   height: 140px;
   width: 140px;
@@ -33,31 +45,51 @@
   border: 2px solid #fff;
   margin: 20px 45px;
 }
+
 .sidebar li a {
   color: #fff;
   transition: 0.3s;
 }
+
 .sidebar li a:hover {
   color: #3effbe;
 }
+
 .icons {
+  position: relative;
   display: flex;
   justify-content: space-around;
-} /* Close Button */
+  overflow: hidden;
+}
+
+.arrow {
+  position: absolute;
+  top: -12px;                /* 👈 acima dos ícones */
+  font-size: 24px;
+  color: #3effbe;
+  opacity: 0;
+  transition: left 0.3s ease, opacity 0.2s;
+}
+
+/* Close Button */
 .bi-x-square {
   margin-left: 200px;
 }
+
 .bi-github,
 .bi-instagram,
 .bi-linkedin,
 .bi-discord {
   font-size: 30px;
-} /* Cursor typing */
+} 
+
+/* Cursor typing */
 h1::after {
   content: '|';
   color: #fff;
   animation: flashing 1s infinite;
 }
+
 @keyframes flashing {
   0%,
   100% {
@@ -66,37 +98,48 @@ h1::after {
   50% {
     opacity: 0;
   }
-} /* CONTENT */
+} 
+
+/* CONTENT */
 .content {
   background: #eee;
   margin-left: 250px;
   width: calc(100% - 250px);
   min-height: 100vh;
   position: relative;
-} /* Mobile content */
+} 
+
+/* Mobile content */
 @media (max-width: 767px) {
   .content {
     margin-left: 0;
     width: 100%;
   }
 }
+
 @media (max-width: 767px) {
   #side_nav {
     overflow-y: hidden;
   }
-} /* NAVBAR */
+} 
+
+/* NAVBAR */
 .navbar.navbar-expand-lg.navbar-light.bg-light {
   padding: 0;
 }
+
 .container-fluid {
   background-color: #060d15;
 }
+
 a.navbar-brand.fs-4 {
   color: #fff;
 }
+
 .bi-list::before {
   color: #fff;
 }
+
 :root {
   --sidebar-width: 260px;
 }

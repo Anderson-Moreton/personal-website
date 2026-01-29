@@ -53,7 +53,7 @@ export class ContactComponent {
     next: () => {
       this.loading = false;
       this.notificationService.success('Your message was sent successfully!');
-      form.resetForm(); // 👈 limpa tudo corretamente
+      form.resetForm(); 
     },
     error: () => {
       this.loading = false;
