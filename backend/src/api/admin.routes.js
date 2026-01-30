@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const authAdmin = require('../middlewares/authAdmin');
 
 /**
@@ -10,7 +11,12 @@ const authAdmin = require('../middlewares/authAdmin');
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  if (email !== 'admin@personal.com' || password !== 'admin123') {
+  if (email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD) {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
+
+  const isValid = await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH);
+  if (!isValid) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
 
