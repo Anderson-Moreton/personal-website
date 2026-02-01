@@ -91,8 +91,12 @@ router.get('/home', async (req, res) => {
 
     res.json(rows);
   } catch (error) {
-    console.error('Error fetching home testimonials:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.log('SQL Error:', error);
+    res.status(500).json({ 
+      error: error.message,
+      code: error.code,
+      sqlMessage: error.sqlMessage
+    });
   }
 });
 

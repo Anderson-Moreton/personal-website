@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
-  private API = 'http://localhost:3000/contact';
+  private API = '/api/contact';
 
   constructor(private http: HttpClient) {}
 

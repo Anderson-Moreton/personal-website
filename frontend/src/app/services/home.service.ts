@@ -7,7 +7,7 @@ import { map } from 'rxjs';
 })
 export class HomeService {
 
-  private API_URL = 'http://localhost:3000/testimonials';
+  private API_URL = '/api/testimonials';
 
   constructor(private http: HttpClient) {}
 

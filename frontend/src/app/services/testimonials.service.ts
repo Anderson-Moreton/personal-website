@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class TestimonialService {
-  private API = 'http://localhost:3000/testimonials';
+  private API = '/api/testimonials';
 
   constructor(private http: HttpClient) {}
 

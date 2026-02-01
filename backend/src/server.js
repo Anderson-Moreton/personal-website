@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -22,7 +20,7 @@ app.use('/testimonials', testimonialsRoutes);
 app.use('/testimonials', testimonialsLikesRoutes);
 app.use('/admin', adminRoutes);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>
-  console.log(`Server running on port: ${PORT}`)
-);
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port: ${PORT}`);
+});

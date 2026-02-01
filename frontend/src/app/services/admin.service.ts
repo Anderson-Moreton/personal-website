@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AdminService {
 
-  private API = 'http://localhost:3000/admin';
+  private API = '/api/admin';
 
   constructor(private http: HttpClient) {}
 
