@@ -11,6 +11,9 @@ export class HomeService {
 
   constructor(private http: HttpClient) {}
 
+  /* =========================
+   * VISITOR ID (SAFE UUID)
+   * ========================= */
   private getVisitorId(): string {
     let id = localStorage.getItem('visitor_id');
 
@@ -22,6 +25,7 @@ export class HomeService {
     return id;
   }
 
+  // UUID v4 compatible (no crypto.randomUUID)
   private generateUUID(): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
       const r = Math.random() * 16 | 0;
@@ -30,6 +34,9 @@ export class HomeService {
     });
   }
 
+  /* =========================
+   * GET HOME TESTIMONIALS
+   * ========================= */
   getHomeMessages() {
     return this.http.get<any[]>(
       `${this.API_URL}/home`,
@@ -49,6 +56,9 @@ export class HomeService {
     );
   }
 
+  /* =========================
+   * LIKE / UNLIKE
+   * ========================= */
   likeMessage(testimonialId: number) {
     return this.http.post(
       `${this.API_URL}/${testimonialId}/like`,
