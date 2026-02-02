@@ -17,8 +17,9 @@ services:
     container_name: personal_backend
     build:
       context: ./backend
-      dockerfile: Dockerfile
     restart: always
+    env_file:
+      - .env   # 👈 👈 👈 ESSENCIAL
     environment:
       DB_HOST: mysql
       DB_USER: app_user
@@ -33,12 +34,11 @@ services:
     container_name: personal_frontend
     build:
       context: ./frontend
-      dockerfile: Dockerfile
     restart: always
     depends_on:
       - backend
     ports:
-      - "80:80"
+      - "8080:80"
 
 volumes:
   mysql_data:

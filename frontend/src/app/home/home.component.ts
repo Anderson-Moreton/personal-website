@@ -71,25 +71,36 @@ export class HomeComponent implements OnInit, AfterViewInit {
     depo.likes = Number(depo.likes ?? 0);
 
     if (!depo.liked) {
+      // LIKE
       depo.liked = true;
       depo.likes += 1;
       this.saveLike(depo.id);
 
       this.homeService.likeMessage(depo.id).subscribe({
+        next: (res: any) => {
+          depo.liked = res.liked;
+          depo.likes = res.likes;
+        },
         error: () => {
           depo.liked = false;
-          depo.likes -= 1;
+          depo.likes = Math.max(depo.likes - 1, 0);
           this.removeLike(depo.id);
         }
       });
+
       return;
     }
 
+    // UNLIKE
     depo.liked = false;
     depo.likes = Math.max(depo.likes - 1, 0);
     this.removeLike(depo.id);
 
     this.homeService.unlikeMessage(depo.id).subscribe({
+      next: (res: any) => {
+        depo.liked = res.liked;
+        depo.likes = res.likes;
+      },
       error: () => {
         depo.liked = true;
         depo.likes += 1;

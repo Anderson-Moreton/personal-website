@@ -7,66 +7,51 @@ const upload = require('../config/multer');
 
 /**
  * POST /testimonials
- * Create a testimonial (pending approval)
  */
-router.post(
-  '/',
-  upload.single('image'),
-  async (req, res) => {
-    try {
-      const { firstName, lastName, message } = req.body;
+router.post('/', upload.single('image'), async (req, res) => {
+  try {
+    const { firstName, lastName, message } = req.body;
 
-      if (!firstName || !lastName || !message) {
-        return res.status(400).json({ error: 'Missing required fields' });
-      }
-
-      const trimmedMessage = message.trim();
-
-      if (trimmedMessage.length < 10) {
-        return res.status(400).json({ error: 'Message must be at least 10 characters long' });
-      }
-      if (trimmedMessage.length > 200) {
-        return res.status(400).json({ error: 'Message must not exceed 200 characters' });
-      }
-
-      let imageUrl = null;
-
-      if (req.file) {
-        const filename = `${Date.now()}.jpg`;
-        const outputPath = path.join(__dirname, '../uploads', filename);
-
-        await sharp(req.file.buffer)
-          .resize(300, 300, { fit: 'cover' })
-          .jpeg({ quality: 80 })
-          .toFile(outputPath);
-
-        imageUrl = `/uploads/${filename}`;
-      }
-
-      await db.execute(
-        `INSERT INTO testimonials
-         (first_name, last_name, message, image_url, approved)
-         VALUES (?, ?, ?, ?, 0)`,
-        [
-          firstName.trim(),
-          lastName.trim(),
-          trimmedMessage,
-          imageUrl
-        ]
-      );
-
-      res.status(201).json({ success: true });
-
-    } catch (error) {
-      console.error('Error creating testimonial:', error);
-      res.status(500).json({ error: 'Internal server error' });
+    if (!firstName || !lastName || !message) {
+      return res.status(400).json({ error: 'Missing required fields' });
     }
+
+    const trimmedMessage = message.trim();
+
+    if (trimmedMessage.length < 10 || trimmedMessage.length > 200) {
+      return res.status(400).json({ error: 'Message length invalid' });
+    }
+
+    let imageUrl = null;
+
+    if (req.file) {
+      const filename = `${Date.now()}.jpg`;
+      const outputPath = path.join(__dirname, '../uploads', filename);
+
+      await sharp(req.file.buffer)
+        .resize(300, 300, { fit: 'cover' })
+        .jpeg({ quality: 80 })
+        .toFile(outputPath);
+
+      imageUrl = `/uploads/${filename}`;
+    }
+
+    await db.execute(
+      `INSERT INTO testimonials
+       (first_name, last_name, message, image_url, approved)
+       VALUES (?, ?, ?, ?, 0)`,
+      [firstName.trim(), lastName.trim(), trimmedMessage, imageUrl]
+    );
+
+    res.status(201).json({ success: true });
+  } catch (error) {
+    console.error('Create testimonial error:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
-);
+});
 
 /**
  * GET /testimonials/home
- * Approved testimonials for Home
  */
 router.get('/home', async (req, res) => {
   try {
@@ -91,12 +76,8 @@ router.get('/home', async (req, res) => {
 
     res.json(rows);
   } catch (error) {
-    console.log('SQL Error:', error);
-    res.status(500).json({ 
-      error: error.message,
-      code: error.code,
-      sqlMessage: error.sqlMessage
-    });
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 

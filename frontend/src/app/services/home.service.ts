@@ -11,9 +11,24 @@ export class HomeService {
 
   constructor(private http: HttpClient) {}
 
-  // Get approved testimonials for Home
+  private getVisitorId(): string {
+    let id = localStorage.getItem('visitor_id');
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem('visitor_id', id);
+    }
+    return id;
+  }
+
   getHomeMessages() {
-    return this.http.get<any[]>(`${this.API_URL}/home`).pipe(
+    return this.http.get<any[]>(
+      `${this.API_URL}/home`,
+      {
+        headers: {
+          'X-Visitor-Id': this.getVisitorId()
+        }
+      }
+    ).pipe(
       map(items =>
         items.map(t => ({
           ...t,
@@ -27,13 +42,23 @@ export class HomeService {
   likeMessage(testimonialId: number) {
     return this.http.post(
       `${this.API_URL}/${testimonialId}/like`,
-      {}
+      {},
+      {
+        headers: {
+          'X-Visitor-Id': this.getVisitorId()
+        }
+      }
     );
   }
 
   unlikeMessage(testimonialId: number) {
     return this.http.delete(
-      `${this.API_URL}/${testimonialId}/like`
+      `${this.API_URL}/${testimonialId}/like`,
+      {
+        headers: {
+          'X-Visitor-Id': this.getVisitorId()
+        }
+      }
     );
   }
 }

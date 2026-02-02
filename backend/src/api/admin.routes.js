@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt'); // ✅ This import was missing
+const bcrypt = require('bcrypt'); 
 const authAdmin = require('../middlewares/authAdmin');
 
 /**
@@ -12,29 +12,29 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Basic validation
     if (!email || !password) {
       return res.status(400).json({ error: 'Email and password required' });
     }
 
-    // Validate admin email
-    if (email !== process.env.ADMIN_EMAIL) {
+    const [rows] = await db.execute(
+      'SELECT * FROM admins WHERE email = ?',
+      [email]
+    );
+
+    if (rows.length === 0) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Compare the entered password with the HASH stored in .env
-    const isValid = await bcrypt.compare(
-      password,
-      process.env.ADMIN_PASSWORD
-    );
+    const admin = rows[0];
+
+    const isValid = await bcrypt.compare(password, admin.password_hash);
 
     if (!isValid) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Generate JWT token
     const token = jwt.sign(
-      { role: 'admin', email },
+      { role: 'admin', email: admin.email },
       process.env.JWT_SECRET,
       { expiresIn: '2h' }
     );
