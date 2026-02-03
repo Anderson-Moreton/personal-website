@@ -15,10 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.use('/contact', contactRoutes);
-app.use('/testimonials', testimonialsRoutes);
-app.use('/testimonials', testimonialsLikesRoutes);
-app.use('/admin', adminRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/testimonials', testimonialsRoutes);
+app.use('/api/testimonials', testimonialsLikesRoutes);
+app.use('/api/admin', adminRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () => {
