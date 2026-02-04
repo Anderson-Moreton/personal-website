@@ -27,7 +27,11 @@ import { MyRepositoryComponent } from '../my-repository/my-repository.component'
 export class HomeComponent implements OnInit, AfterViewInit {
 
   sidebarActive = false;
+
   depositions: any[] = [];
+  hasDepositions = false;
+  isLoadingDepositions = true;
+
   isModalOpen = false;
 
   constructor(
@@ -36,33 +40,33 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.depositions = this.route.snapshot.data['depositions'];
-
-    this.route.data.subscribe(data => {
-      this.depositions = data['depositions'];
-      this.restoreLikesFromLocalStorage();
+    this.route.data.subscribe({
+      next: (data) => {
+        this.depositions = data['depositions'] ?? [];
+        this.hasDepositions = this.depositions.length > 0;
+        this.restoreLikesFromLocalStorage();
+        this.isLoadingDepositions = false;
+      },
+      error: () => {
+        this.depositions = [];
+        this.hasDepositions = false;
+        this.isLoadingDepositions = false;
+      }
     });
   }
 
   /* ===== SCROLL ANIMATION ===== */
   ngAfterViewInit(): void {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-        } else {
-          entry.target.classList.remove('active');
-        }
-      });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          entry.target.classList.toggle('active', entry.isIntersecting);
+        });
       },
-      {
-        threshold: 0.2
-      }
+      { threshold: 0.2 }
     );
 
-    document
-      .querySelectorAll('.reveal')
+    document.querySelectorAll('.reveal')
       .forEach(el => observer.observe(el));
   }
 
@@ -71,7 +75,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     depo.likes = Number(depo.likes ?? 0);
 
     if (!depo.liked) {
-      // LIKE
       depo.liked = true;
       depo.likes += 1;
       this.saveLike(depo.id);
@@ -87,11 +90,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.removeLike(depo.id);
         }
       });
-
       return;
     }
 
-    // UNLIKE
     depo.liked = false;
     depo.likes = Math.max(depo.likes - 1, 0);
     this.removeLike(depo.id);
