@@ -70,8 +70,8 @@ router.post('/', upload.single('image'), async (req, res) => {
  * GET /testimonials/home
  */
 router.get('/home', async (req, res) => {
-    try {
-        const [rows] = await db.execute(`
+  try {
+    const [rows] = await db.execute(`
       SELECT
         t.id,
         t.first_name,
@@ -79,12 +79,12 @@ router.get('/home', async (req, res) => {
         t.message,
         t.image_url,
         t.created_at,
-        COUNT(l.id) AS likes
+        COALESCE(COUNT(l.id), 0) AS likes
       FROM testimonials t
       LEFT JOIN testimonial_likes l
         ON l.testimonial_id = t.id
       WHERE t.approved = 1
-        AND t.show_on_home = 1
+        AND (t.show_on_home = 1 OR t.show_on_home IS NULL)
       GROUP BY
         t.id,
         t.first_name,
@@ -93,16 +93,14 @@ router.get('/home', async (req, res) => {
         t.image_url,
         t.created_at
       ORDER BY t.created_at DESC
-      LIMIT 8;
+      LIMIT 8
     `);
 
-        res.json(rows);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: 'Internal server error'
-        });
-    }
+    res.json(rows || []);
+  } catch (error) {
+    console.error('Testimonials home error:', error);
+    res.json([]); // Fallback 
+  }
 });
 
 module.exports = router;

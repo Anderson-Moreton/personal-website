@@ -20,7 +20,6 @@ app.use('/api/testimonials', testimonialsRoutes);
 app.use('/api/testimonials', testimonialsLikesRoutes);
 app.use('/api/admin', adminRoutes);
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port: ${PORT}`);
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
 });
