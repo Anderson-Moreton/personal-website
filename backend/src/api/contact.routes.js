@@ -10,24 +10,20 @@ router.post('/', async (req, res) => {
   try {
     const { firstName, lastName, email, message } = req.body;
 
-    /* =========================
-     * BASIC VALIDATION
-     * ========================= */
-
-    // Check required fields
+    // Validate required fields
     if (!firstName || !lastName || !email || !message) {
       return res.status(400).json({
         error: 'All fields are required.'
       });
     }
 
-    // Trim input values
+    // Sanitize input
     const cleanFirstName = firstName.trim();
     const cleanLastName = lastName.trim();
     const cleanEmail = email.trim();
     const cleanMessage = message.trim();
 
-    // Email format validation
+    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(cleanEmail)) {
       return res.status(400).json({
@@ -35,35 +31,34 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // Message length protection (anti-spam)
+    // Message length protection
     if (cleanMessage.length > 1000) {
       return res.status(400).json({
         error: 'Message is too long.'
       });
     }
 
-    /* =========================
-     * BREVO SMTP TRANSPORTER
-     * =========================
-     * Uses SMTP login (not API key)
-     * Port 2525 is confirmed open on the server
+    /**
+     * Brevo SMTP transporter
+     * IMPORTANT:
+     * - host MUST be smtp-relay.brevo.com
+     * - port MUST be 2525
+     * - user MUST be "apikey"
+     * - pass MUST be the Brevo SMTP key
      */
     const transporter = nodemailer.createTransport({
-      host: process.env.CONTACT_SMTP_HOST,          // smtp-relay.brevo.com
-      port: Number(process.env.CONTACT_SMTP_PORT),  // 2525
-      secure: false,                                // STARTTLS
+      host: 'smtp-relay.brevo.com',
+      port: 2525,
+      secure: false,
       auth: {
-        user: process.env.CONTACT_SMTP_USER,        // example: a1c717001@smtp-brevo.com
-        pass: process.env.CONTACT_SMTP_PASS         // Brevo SMTP password
+        user: 'apikey',
+        pass: process.env.CONTACT_EMAIL_PASSWORD
       },
       connectionTimeout: 10000,
       greetingTimeout: 10000,
       socketTimeout: 10000
     });
 
-    /* =========================
-     * SEND EMAIL
-     * ========================= */
     await transporter.sendMail({
       from: `"Portfolio Contact" <${process.env.CONTACT_EMAIL}>`,
       to: process.env.CONTACT_EMAIL,
@@ -78,13 +73,10 @@ ${cleanMessage}
       `
     });
 
-    // Success response
     return res.json({ success: true });
 
   } catch (error) {
-    // Log error for debugging
     console.error('CONTACT ERROR:', error);
-
     return res.status(500).json({
       error: 'Failed to send message'
     });
