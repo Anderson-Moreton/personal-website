@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
     const cleanEmail = email.trim();
     const cleanMessage = message.trim();
 
-    // Email validation
+    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(cleanEmail)) {
       return res.status(400).json({
@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // Message length protection
+    // Prevent abuse
     if (cleanMessage.length > 1000) {
       return res.status(400).json({
         error: 'Message is too long.'
@@ -41,24 +41,22 @@ router.post('/', async (req, res) => {
     /**
      * Brevo SMTP transporter
      * IMPORTANT:
-     * - host MUST be smtp-relay.brevo.com
-     * - port MUST be 2525
-     * - user MUST be "apikey"
-     * - pass MUST be the Brevo SMTP key
+     * - host, port, user and pass come from .env
      */
     const transporter = nodemailer.createTransport({
-      host: 'smtp-relay.brevo.com',
-      port: 2525,
+      host: process.env.CONTACT_SMTP_HOST,
+      port: Number(process.env.CONTACT_SMTP_PORT),
       secure: false,
       auth: {
-        user: 'apikey',
-        pass: process.env.CONTACT_EMAIL_PASSWORD
+        user: process.env.CONTACT_SMTP_USER,
+        pass: process.env.CONTACT_SMTP_PASS
       },
       connectionTimeout: 10000,
       greetingTimeout: 10000,
       socketTimeout: 10000
     });
 
+    // Send email
     await transporter.sendMail({
       from: `"Portfolio Contact" <${process.env.CONTACT_EMAIL}>`,
       to: process.env.CONTACT_EMAIL,
