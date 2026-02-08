@@ -3,71 +3,80 @@ const router = express.Router();
 const db = require('../db');
 const sharp = require('sharp');
 const path = require('path');
+const fs = require('fs');
 const upload = require('../config/multer');
 
 /**
  * POST /testimonials
+ * Creates a new testimonial (image optional)
  */
 router.post('/', upload.single('image'), async (req, res) => {
-    try {
-        const {
-            firstName,
-            lastName,
-            message
-        } = req.body;
+  try {
+    const { firstName, lastName, message } = req.body;
 
-        if (!firstName || !lastName || !message) {
-            return res.status(400).json({
-                error: 'Missing required fields'
-            });
-        }
-
-        const trimmedMessage = message.trim();
-
-        if (trimmedMessage.length < 10 || trimmedMessage.length > 200) {
-            return res.status(400).json({
-                error: 'Message length invalid'
-            });
-        }
-
-        let imageUrl = null;
-
-        if (req.file) {
-            const filename = `${Date.now()}.jpg`;
-            const outputPath = path.join(__dirname, '../uploads', filename);
-
-            await sharp(req.file.buffer)
-                .resize(300, 300, {
-                    fit: 'cover'
-                })
-                .jpeg({
-                    quality: 80
-                })
-                .toFile(outputPath);
-
-            imageUrl = `/uploads/${filename}`;
-        }
-
-        await db.execute(
-            `INSERT INTO testimonials
-       (first_name, last_name, message, image_url, approved)
-       VALUES (?, ?, ?, ?, 0)`,
-            [firstName.trim(), lastName.trim(), trimmedMessage, imageUrl]
-        );
-
-        res.status(201).json({
-            success: true
-        });
-    } catch (error) {
-        console.error('Create testimonial error:', error);
-        res.status(500).json({
-            error: 'Internal server error'
-        });
+    // Validate required fields
+    if (!firstName || !lastName || !message) {
+      return res.status(400).json({
+        error: 'Missing required fields'
+      });
     }
+
+    const trimmedMessage = message.trim();
+
+    // Validate message length
+    if (trimmedMessage.length < 10 || trimmedMessage.length > 200) {
+      return res.status(400).json({
+        error: 'Message length invalid'
+      });
+    }
+
+    let imageUrl = null;
+
+    // If an image was uploaded, process it
+    if (req.file) {
+      const filename = `${Date.now()}.jpg`;
+
+      // Absolute path to /uploads directory
+      const uploadsDir = path.join(__dirname, '../uploads');
+      const outputPath = path.join(uploadsDir, filename);
+
+      // Ensure uploads directory exists (CRITICAL FIX)
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+
+      // Resize and save image using Sharp
+      await sharp(req.file.buffer)
+        .resize(300, 300, { fit: 'cover' })
+        .jpeg({ quality: 80 })
+        .toFile(outputPath);
+
+      imageUrl = `/uploads/${filename}`;
+    }
+
+    // Insert testimonial into database
+    await db.execute(
+      `
+      INSERT INTO testimonials
+        (first_name, last_name, message, image_url, approved)
+      VALUES (?, ?, ?, ?, 0)
+      `,
+      [firstName.trim(), lastName.trim(), trimmedMessage, imageUrl]
+    );
+
+    return res.status(201).json({ success: true });
+
+  } catch (error) {
+    console.error('Create testimonial error:', error);
+    return res.status(500).json({
+      error: 'Internal server error'
+    });
+  }
 });
 
 /**
  * GET /testimonials/home
+ * Returns approved testimonials for home page
  */
 router.get('/home', async (req, res) => {
   try {
@@ -96,10 +105,12 @@ router.get('/home', async (req, res) => {
       LIMIT 8
     `);
 
-    res.json(rows || []);
+    return res.json(rows || []);
+
   } catch (error) {
     console.error('Testimonials home error:', error);
-    res.json([]); // Fallback 
+    // Safe fallback: never break the home page
+    return res.json([]);
   }
 });
 
