@@ -39,6 +39,9 @@ router.post('/login', async (req, res) => {
       { expiresIn: '2h' }
     );
 
+    console.log('ADMIN LOGIN SUCCESS');
+    console.log('TOKEN:', token);
+
     res.json({ token });
 
   } catch (error) {
