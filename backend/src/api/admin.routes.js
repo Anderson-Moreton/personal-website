@@ -2,20 +2,24 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcrypt');
 const authAdmin = require('../middlewares/authAdmin');
 
 /**
  * POST /admin/login
+ * Authenticate admin and return JWT token
  */
 router.post('/login', async (req, res) => {
   try {
+
     const { email, password } = req.body;
 
+    // Validate required fields
     if (!email || !password) {
       return res.status(400).json({ error: 'Email and password required' });
     }
 
+    // Get admin from database
     const [rows] = await db.execute(
       'SELECT * FROM admins WHERE email = ?',
       [email]
@@ -27,12 +31,14 @@ router.post('/login', async (req, res) => {
 
     const admin = rows[0];
 
-    const isValid = await bcrypt.compare(password, admin.password_hash);
+    // IMPORTANT: database column name is "password"
+    const isValid = await bcrypt.compare(password, admin.password);
 
     if (!isValid) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
+    // Generate JWT token
     const token = jwt.sign(
       { role: 'admin', email: admin.email },
       process.env.JWT_SECRET,
@@ -51,19 +57,12 @@ router.post('/login', async (req, res) => {
 });
 
 /**
- * GET /admin/testimonials/pending
+ * GET pending testimonials
  */
 router.get('/testimonials/pending', authAdmin, async (req, res) => {
-  res.set('Cache-Control', 'no-store');
 
   const [rows] = await db.execute(`
-    SELECT
-      id,
-      first_name,
-      last_name,
-      message,
-      image_url,
-      created_at
+    SELECT id, first_name, last_name, message, image_url, created_at
     FROM testimonials
     WHERE approved = 0
     ORDER BY created_at DESC
@@ -73,9 +72,10 @@ router.get('/testimonials/pending', authAdmin, async (req, res) => {
 });
 
 /**
- * PUT /admin/testimonials/:id/approve
+ * Approve testimonial
  */
 router.put('/testimonials/:id/approve', authAdmin, async (req, res) => {
+
   const { id } = req.params;
 
   await db.execute(
@@ -87,9 +87,10 @@ router.put('/testimonials/:id/approve', authAdmin, async (req, res) => {
 });
 
 /**
- * PUT /admin/testimonials/:id/reject
+ * Reject testimonial
  */
 router.put('/testimonials/:id/reject', authAdmin, async (req, res) => {
+
   const { id } = req.params;
 
   await db.execute(
@@ -101,19 +102,12 @@ router.put('/testimonials/:id/reject', authAdmin, async (req, res) => {
 });
 
 /**
- * GET /admin/testimonials/approved
- * Lista TODOS os aprovados (para controle do admin)
+ * List approved testimonials (admin view)
  */
 router.get('/testimonials/approved', authAdmin, async (req, res) => {
+
   const [rows] = await db.execute(`
-    SELECT
-      id,
-      first_name,
-      last_name,
-      message,
-      image_url,
-      show_on_home,
-      created_at
+    SELECT id, first_name, last_name, message, image_url, show_on_home, created_at
     FROM testimonials
     WHERE approved = 1
     ORDER BY created_at DESC
@@ -123,9 +117,10 @@ router.get('/testimonials/approved', authAdmin, async (req, res) => {
 });
 
 /**
- * PUT /admin/testimonials/:id/toggle-home
+ * Toggle show on home
  */
 router.put('/testimonials/:id/toggle-home', authAdmin, async (req, res) => {
+
   const { id } = req.params;
 
   await db.execute(
@@ -137,9 +132,10 @@ router.put('/testimonials/:id/toggle-home', authAdmin, async (req, res) => {
 });
 
 /**
- * DELETE /admin/testimonials/:id
+ * Delete testimonial
  */
 router.delete('/testimonials/:id', authAdmin, async (req, res) => {
+
   const { id } = req.params;
 
   await db.execute(
