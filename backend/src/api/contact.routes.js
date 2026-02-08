@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 
 /**
  * POST /contact
- * Send contact email using Brevo SMTP
+ * Sends a contact email using Brevo SMTP
  */
 router.post('/', async (req, res) => {
   try {
@@ -12,51 +12,35 @@ router.post('/', async (req, res) => {
 
     // Validate required fields
     if (!firstName || !lastName || !email || !message) {
-      return res.status(400).json({
-        error: 'All fields are required.'
-      });
+      return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    // Sanitize input
     const cleanFirstName = firstName.trim();
     const cleanLastName = lastName.trim();
     const cleanEmail = email.trim();
     const cleanMessage = message.trim();
 
-    // Validate email format
+    // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(cleanEmail)) {
-      return res.status(400).json({
-        error: 'Invalid email address.'
-      });
+      return res.status(400).json({ error: 'Invalid email address.' });
     }
 
-    // Prevent abuse
-    if (cleanMessage.length > 1000) {
-      return res.status(400).json({
-        error: 'Message is too long.'
-      });
-    }
-
-    /**
-     * Brevo SMTP transporter
-     * IMPORTANT:
-     * - host, port, user and pass come from .env
-     */
+    // Create Brevo SMTP transporter
     const transporter = nodemailer.createTransport({
-      host: process.env.CONTACT_SMTP_HOST,
-      port: Number(process.env.CONTACT_SMTP_PORT),
-      secure: false,
+      host: process.env.CONTACT_SMTP_HOST, // smtp-relay.brevo.com
+      port: Number(process.env.CONTACT_SMTP_PORT), // 2525
+      secure: false, // MUST be false for 2525
+      requireTLS: true, // THIS IS THE KEY
       auth: {
-        user: process.env.CONTACT_SMTP_USER,
-        pass: process.env.CONTACT_SMTP_PASS
+        user: process.env.CONTACT_SMTP_USER, // apikey
+        pass: process.env.CONTACT_SMTP_PASS  // Brevo SMTP key
       },
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 10000
+      tls: {
+        rejectUnauthorized: false
+      }
     });
 
-    // Send email
     await transporter.sendMail({
       from: `"Portfolio Contact" <${process.env.CONTACT_EMAIL}>`,
       to: process.env.CONTACT_EMAIL,
@@ -75,9 +59,7 @@ ${cleanMessage}
 
   } catch (error) {
     console.error('CONTACT ERROR:', error);
-    return res.status(500).json({
-      error: 'Failed to send message'
-    });
+    return res.status(500).json({ error: 'Failed to send message' });
   }
 });
 
