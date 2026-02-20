@@ -16,10 +16,10 @@ services:
     ports:
       - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uapp_user", "-papp_password"]
+      interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 5
 
   backend:
     container_name: personal_backend
