@@ -16,8 +16,7 @@ export class MyRepositoryComponent {
     {
       title: 'OPA Delivery App',
       description:
-        'Food delivery platform with authentication, shopping cart, order tracking and admin panel.',
-      technologies: 'Angular • Node.js • Express • MySQL • Docker',
+        'Food delivery platform with authentication, shopping cart, order tracking and admin panel. Technologies: Angular • Node.js • Express • MySQL • Docker',
       image: 'assets/img/opaDeliveryApp.PNG',
       link: 'https://github.com/Anderson-Moreton/opa-delivery-app',
       external: true,
@@ -26,14 +25,14 @@ export class MyRepositoryComponent {
       title: 'Project under development ',
       description: 'The project is still in progress. More details will be available soon.',
       image: 'assets/img/profileRepository.png',
-      link: 'https://github.com/Anderson-Moreton',
+      link: 'coming-soon',
       external: false,
     },
     {
       title: 'Project under development ',
       description: 'The project is still in progress. More details will be available soon.',
       image: 'assets/img/profileRepository.png',
-      link: 'https://github.com/Anderson-Moreton',
+      link: '/coming-soon',
       external: false,
     },
   ];
