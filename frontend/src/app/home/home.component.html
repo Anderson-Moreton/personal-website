@@ -13,22 +13,27 @@
           <div class="row">
             <div class="session-welcome-content col-12 col-lg-6">
               <h3>Thank you for visiting my work...<br />Welcome!</h3>
-              <h5 class="ms-3">I want to make one comment about this project:</h5>
+              <h5 class="ms-3">I want to make a comment about this project:</h5>
               <div class="about-text ms-3">
                 <p>
-                  This project was made to practice and show some web development skills. I also
-                  wanted to try new things and learn more by doing them. It helped me understand how
-                  front-end and back-end work together.
+                  This portfolio represents my journey as a Full Stack Developer and showcases the
+                  projects and technologies I have been working with. It was designed to demonstrate
+                  practical experience in building modern web applications using Angular, Node.js,
+                  Express, and MySQL.
                 </p>
+
                 <p>
-                  The goal is to use what I have learned and improve my knowledge. For example, the
-                  testimonials with likes on the main page, and the message form. I added them to
-                  practice front-end and back-end integration.
+                  Throughout this project, I applied concepts such as component-based architecture,
+                  RESTful API integration, JWT authentication, responsive design, file uploads,
+                  email services, and database management. Every feature was developed with a focus
+                  on clean code, scalability, and maintainability.
                 </p>
+
                 <p>
-                  Any help or feedback is very welcome, and I accept criticism. Your advice can help
-                  me see my mistakes, find what I need to improve, and continue to grow as a
-                  developer.
+                  Since completing this portfolio, I have continued expanding my experience by
+                  developing additional projects, including a complete e-commerce application. I am
+                  passionate about continuous learning and always open to feedback, new challenges,
+                  and opportunities to grow as a software developer.
                 </p>
               </div>
             </div>
@@ -47,22 +52,13 @@
           <div class="title-depositions d-flex justify-content-between align-items-center">
             <h4 class="section-title mx-auto">Testimonials</h4>
 
-            <button
-              type="button"
-              class="add-deposition-icon me-4"
-              (click)="openModal()"
-            >
+            <button type="button" class="add-deposition-icon me-4" (click)="openModal()">
               <i class="bi bi-plus-circle"> Add</i>
             </button>
           </div>
           <!-- EMPTY STATE -->
-          <div
-            *ngIf="depositions.length === 0"
-            class="text-center mt-4 mb-4 empty-testimonials"
-          >
-            <p class="text-muted">
-              No testimonials yet. Be the first to leave a message 🙂
-            </p>
+          <div *ngIf="depositions.length === 0" class="text-center mt-4 mb-4 empty-testimonials">
+            <p class="text-muted">No testimonials yet. Be the first to leave a message 🙂</p>
           </div>
 
           <!-- LIST -->
@@ -73,9 +69,7 @@
             >
               <div class="deposition card flex-fill h-100">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <h6 class="title-deposition">
-                    {{ depo.first_name }} {{ depo.last_name }}
-                  </h6>
+                  <h6 class="title-deposition">{{ depo.first_name }} {{ depo.last_name }}</h6>
 
                   <div *ngIf="depo.image_url" class="image-deposition">
                     <img [src]="depo.image_url" alt="testimonial image" />
@@ -113,16 +107,8 @@
         </section>
 
         <!-- MODAL -->
-        <div
-          class="custom-modal-backdrop"
-          [class.active]="isModalOpen"
-          (click)="closeModal()"
-        >
-          <div
-            class="custom-modal"
-            [class.active]="isModalOpen"
-            (click)="$event.stopPropagation()"
-          >
+        <div class="custom-modal-backdrop" [class.active]="isModalOpen" (click)="closeModal()">
+          <div class="custom-modal" [class.active]="isModalOpen" (click)="$event.stopPropagation()">
             <button class="close-btn" (click)="closeModal()">×</button>
             <app-message-modal (close)="closeModal()"></app-message-modal>
           </div>

@@ -16,9 +16,9 @@ export class MyRepositoryComponent {
     {
       title: 'OPA Delivery App',
       description:
-        'Food delivery platform with authentication, shopping cart, order tracking and admin panel. Technologies: Angular • Node.js • Express • MySQL • Docker',
+        'A modern Full Stack food delivery application developed with Angular and TypeScript, emphasizing component-based architecture, REST API integration, and responsive user experience. The project includes secure JWT authentication, shopping cart, order management, real-time order tracking, and an administrative dashboard. Built with Node.js, Express, MySQL, and Docker, following modern web development best practices.',
       image: 'assets/img/opaDeliveryApp.PNG',
-      link: 'https://github.com/Anderson-Moreton/opa-delivery-app',
+      link: 'https://opa-delivery-app.vercel.app/',
       external: true,
     },
     {
